@@ -23,10 +23,11 @@ namespace API.Controllers
         [HttpPost("Register")]
         public ActionResult<string> Register([FromBody] User newUser) {
             // Check if User model is valid
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            }
-
+            // Ensure that all necessary variables have values, if not return error
+            if (String.IsNullOrWhiteSpace(newUser.FirstName) || String.IsNullOrWhiteSpace(newUser.LastName) || String.IsNullOrWhiteSpace(newUser.Email) || String.IsNullOrWhiteSpace(newUser.Password))
+                return BadRequest(400);
             // Return 409 error code if user with same Email already exists
             if (_repo.EmailTaken(newUser.Email)) {
                 _logger.LogWarning($"Attempt to register with existing email: {newUser.Email}");
@@ -47,10 +48,12 @@ namespace API.Controllers
             //     return BadRequest(ModelState);
             // }
 
+            // Ensure that all necessary variables have values, if not return error
+            if (String.IsNullOrWhiteSpace(Credentials.Email) || String.IsNullOrWhiteSpace(Credentials.Password))
+                return BadRequest(400);
             // Return 404 error code if user with Email doesn't exist
-            if (!_repo.EmailTaken(Credentials.Email)) {
+            if (!_repo.EmailTaken(Credentials.Email))
                 return NotFound(404);
-            }
 
             // Check if a user with matching credentials exists
             User? user = _repo.VerifyCredentials(Credentials.Email, Credentials.Password);
