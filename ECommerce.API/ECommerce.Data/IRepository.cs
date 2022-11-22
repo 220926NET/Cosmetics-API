@@ -6,6 +6,7 @@ namespace Data
     {
         /* Create */
         void RegisterNewUser(User userInfo);
+        void CreateWishList(User userInfo);
 
         /* Read */
         bool EmailTaken(string email);

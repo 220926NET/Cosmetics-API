@@ -20,7 +20,10 @@ builder.Services.AddCors(options =>
 
 
 builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CosmeticsDB")));
-builder.Services.AddSingleton<IRepository>();
+//added this line in to counter "Cannot instantiate implementation type" error
+//builder.Services.AddScoped<IRepository, SQLRepository>();
+//builder.Services.AddSingleton<IRepository>();
+//builder.Services.AddSingleton<SQLRepository>();
 
 builder.Services.AddControllers();
 

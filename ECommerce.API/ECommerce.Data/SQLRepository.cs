@@ -1,7 +1,8 @@
-﻿//using Models;
+﻿using Models;
 using Data.Entities;
 using Microsoft.Extensions.Logging;
 using System.Web.Helpers;
+using WishlistDetail = Data.Entities.WishlistDetail;
 // using System.Data.SqlClient;
 // using System.Linq;
 // using System.Net.Http.Headers;
@@ -32,6 +33,18 @@ namespace Data
                 Password = Crypto.HashPassword(userInfo.Password)
             });
 
+            // Save changes made to context to actual DB
+            _context.SaveChanges();
+            return;
+        }
+        //create a new wishlist
+        public void CreateWishList(Models.User userInfo) {
+            //create a temp wishlist so that the constructor is used to create a HashSet of wishlistDetails
+            Entities.Wishlist tempWishlist = new Entities.Wishlist();
+            _context.Add(new Entities.Wishlist {
+                UserId = userInfo.ID,
+                WishlistDetails = tempWishlist.WishlistDetails
+            });
             // Save changes made to context to actual DB
             _context.SaveChanges();
             return;
