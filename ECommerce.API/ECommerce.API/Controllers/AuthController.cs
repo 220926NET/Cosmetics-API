@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor.Infrastructure;
-using ECommerce.Models;
-using ECommerce.Data;
+//using Microsoft.AspNetCore.Mvc.Razor.Infrastructure;
+using Models;
+using Data;
 
-namespace ECommerce.API.Controllers
+namespace API.Controllers
 {
     [ApiController]
+    [Route("[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly IRepository _repo;
@@ -19,49 +20,52 @@ namespace ECommerce.API.Controllers
             this._logger = logger;
         }
 
-        [Route("auth/register")]
-        [HttpPost]
-        public async Task<ActionResult> Register([FromBody] User newUser)
-        {
-            _logger.LogInformation("auth/register triggered");
-            try
-            {
-                return Ok(await _repo.CreateNewUserAndReturnUserIdAsync(newUser));
-                _logger.LogInformation("auth/register completed successfully");
+        [HttpPost("Register")]
+        public ActionResult<string> Register([FromBody] User newUser) {
+            // Check if User model is valid
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
             }
-            catch
-            {
-                return BadRequest();
-                _logger.LogWarning("auth/register completed with errors");
-            }
-        }
 
-
-        [Route("auth/login")]
-        [HttpPost]
-        public async Task<ActionResult<User>> Login([FromBody] UserDTO LR)
-        {
-            _logger.LogInformation("auth/login triggered");
-            try
-            {
-                return Ok(await _repo.GetUserLoginAsync(LR.password, LR.email));
-                _logger.LogInformation("auth/login completed successfully");
+            // Return 409 error code if user with same Email already exists
+            if (_repo.EmailTaken(newUser.Email)) {
+                _logger.LogWarning($"Attempt to register with existing email: {newUser.Email}");
+                return Conflict(409);
             }
-            catch
-            {
-                return BadRequest();
-                _logger.LogWarning("auth/login completed with errors");
+            // Register new User
+            else {
+                _repo.RegisterNewUser(newUser);
+                _logger.LogInformation($"New user registered with email: {newUser.Email}");
+                return Created("", 201);
             }
         }
 
-        [Route("auth/logout")]
-        [HttpPost]
-        public ActionResult Logout()
-        { 
-            _logger.LogInformation("auth/logout triggered");
-            return Ok();
-            _logger.LogInformation("auth/logout completed successfully");
+        [HttpPost("Login")]
+        public ActionResult<User> Login([FromBody] User Credentials) {
+            // Check if User model is valid
+            // if (!ModelState.IsValid) {
+            //     return BadRequest(ModelState);
+            // }
+
+            // Return 404 error code if user with Email doesn't exist
+            if (!_repo.EmailTaken(Credentials.Email)) {
+                return NotFound(404);
+            }
+
+            // Check if a user with matching credentials exists
+            User? user = _repo.VerifyCredentials(Credentials.Email, Credentials.Password);
+            if (user != null) {
+                _logger.LogInformation($"Login success by email: {Credentials.Email}");
+                return Ok(user);
+            }
+            // Return 401 error code if user's password does not match
+            else    return Unauthorized(401);
         }
 
+        // [HttpPost("Logout")]
+        // public ActionResult Logout()
+        // { 
+        //     return Ok();
+        // }
     }
 }

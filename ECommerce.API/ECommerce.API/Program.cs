@@ -1,5 +1,6 @@
-using ECommerce.Data;
-using Microsoft.AspNetCore.DataProtection.Repositories;
+using Data;
+using Microsoft.EntityFrameworkCore;
+//using Microsoft.AspNetCore.DataProtection.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +18,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-var connectionString = builder.Configuration["ECommerce:ConnectionString"];
 
-builder.Services.AddSingleton<IRepository>
-    (sp => new SQLRepository(connectionString, sp.GetRequiredService<ILogger<SQLRepository>>()));
+builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CosmeticsDB")));
+builder.Services.AddSingleton<IRepository>();
 
 builder.Services.AddControllers();
 

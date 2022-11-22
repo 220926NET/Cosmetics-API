@@ -1,26 +1,56 @@
-﻿using ECommerce.Models;
+﻿//using Models;
+using Data.Entities;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web.Helpers;
+// using System.Data.SqlClient;
+// using System.Linq;
+// using System.Net.Http.Headers;
+// using System.Text;
+// using System.Threading.Tasks;
+// using System;
+// using System.Collections.Generic;
 
-namespace ECommerce.Data
+namespace Data
 {
     public class SQLRepository : IRepository
     {
-        private readonly string _connectionString;
         private readonly ILogger<SQLRepository> _logger;
+        private readonly CosmeticsContext _context;
 
-        public SQLRepository(string connectionString, ILogger<SQLRepository> logger)
+        public SQLRepository(ILogger<SQLRepository> logger, CosmeticsContext context)
         {
-            this._connectionString = connectionString;
             this._logger = logger;
+            this._context = context;
         }
 
+        public void RegisterNewUser(Models.User userInfo) {
+            // Insert new user's info into table, with hashed password
+            _context.Add(new Entities.User {
+                FirstName = userInfo.FirstName,
+                LastName = userInfo.LastName,
+                Email = userInfo.Email,
+                Password = Crypto.HashPassword(userInfo.Password)
+            });
+
+            // Save changes made to context to actual DB
+            _context.SaveChanges();
+            return;
+        }
+
+        public bool EmailTaken(string email) {
+            // Checks if the given Email exists within the Users table
+            if (_context.Users.Any(u => u.Email == email))  return true;
+            else    return false;
+        }
+        public Models.User? VerifyCredentials(string email, string password) {
+            Entities.User user = _context.Users.Where(u => u.Email == email).FirstOrDefault()!;
+
+            if (Crypto.VerifyHashedPassword(user.Password, password))   
+                return new Models.User(user.Id, user.FirstName, user.LastName, user.Email, ""); 
+            else    return null;
+        }
+
+        /*
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             List<Product> products = new List<Product>();
@@ -51,8 +81,9 @@ namespace ECommerce.Data
             _logger.LogInformation("Executed GetAllProductsAsync");
 
             return products;
-        }
+        }*/
 
+        /*
         public async Task<Product> GetProductByIdAsync(int id)
         {
             using SqlConnection connection = new SqlConnection(_connectionString);
@@ -83,8 +114,9 @@ namespace ECommerce.Data
             _logger.LogInformation("Executed GetProductByIdAsync");
 
             return tmp;
-        }
+        }*/
 
+        /*
         public async Task ReduceInventoryByIdAsync(int id, int purchased)
         {
             using SqlConnection connection = new SqlConnection(_connectionString);
@@ -108,81 +140,6 @@ namespace ECommerce.Data
             await connection.CloseAsync();
 
             _logger.LogInformation("Executed ReduceInventoryAsync");
-        }
-
-        public async Task<User> GetUserLoginAsync(string password, string email)
-        {
-            User user = new User();
-
-            using SqlConnection connection = new SqlConnection(_connectionString);
-            await connection.OpenAsync();
-
-            string cmdText = @"SELECT [UserId], [UserFirstName], [UserLastName], [UserEmail], [UserPassword]" +
-                             "FROM [ecd].[Users]" +
-                             $"WHERE [UserPassword] = @PW AND [UserEmail] = @EM;";
-
-            using SqlCommand cmd = new(cmdText, connection);
-
-            cmd.Parameters.AddWithValue("@PW", password);
-            cmd.Parameters.AddWithValue("@EM", email);
-
-            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
-
-            while (await reader.ReadAsync())
-            {
-                string userFirstName = reader.GetString(1);
-                string userLastName = reader.GetString(2);
-                string userEmail = reader.GetString(3);
-                string userPassword = reader.GetString(4);
-
-                _logger.LogInformation(userFirstName);
-                _logger.LogInformation(userLastName);
-                _logger.LogInformation(userEmail);
-                _logger.LogInformation(userPassword);
-
-                user = new User(userFirstName, userLastName, userEmail, userPassword);
-            }
-
-            await connection.CloseAsync();
-
-            _logger.LogInformation($"Executed GetUsersAsync");
-            _logger.LogInformation(password);
-            _logger.LogInformation(email);
-
-            return user;
-        }
-
-        public async Task<int> CreateNewUserAndReturnUserIdAsync(User newUser)
-        {
-            int UserId = 0;
-
-            using SqlConnection connection = new SqlConnection(_connectionString);
-            await connection.OpenAsync();
-
-            string cmdText = "INSERT INTO [ecd].[Users] ([UserFirstName], [UserLastName], [UserEmail], [UserPassword])" +
-                             @"VALUES (@UFN, @ULN, @UEM, @UPW);" +
-                             "SELECT [UserId]" +
-                             "FROM [ecd].[Users]" +
-                             @"WHERE [UserEmail] = @UEM;";
-
-            using SqlCommand cmd = new(cmdText, connection);
-
-            cmd.Parameters.AddWithValue("@UFN", newUser.firstName);
-            cmd.Parameters.AddWithValue("@ULN", newUser.lastName);
-            cmd.Parameters.AddWithValue("@UEM", newUser.email);
-            cmd.Parameters.AddWithValue("@UPW", newUser.password);
-
-            using SqlDataReader reader = await cmd.ExecuteReaderAsync();
-            while (reader.Read())
-            {
-                UserId = reader.GetInt32(0);
-            }
-
-            await connection.CloseAsync();
-
-            _logger.LogInformation($"Executed CreateNewUserAsync");
-
-            return UserId;
-        }
+        }*/
     }
 }
