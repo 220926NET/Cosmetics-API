@@ -46,7 +46,7 @@ namespace Data
             Entities.User user = _context.Users.Where(u => u.Email == email).FirstOrDefault()!;
 
             if (Crypto.VerifyHashedPassword(user.Password, password))   
-                return new Models.User(user.Id, user.FirstName, user.LastName, user.Email, ""); 
+                return new Models.User(user.Id, user.FirstName, user.LastName, user.Email); 
             else    return null;
         }
 
