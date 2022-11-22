@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// using System;
+// using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+// using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace ECommerce.Data.Entities
+namespace Data.Entities
 {
-    public partial class cosmeticsContext : DbContext
+    public partial class CosmeticsContext : DbContext
     {
-        public cosmeticsContext()
+        public CosmeticsContext()
         {
         }
 
-        public cosmeticsContext(DbContextOptions<cosmeticsContext> options)
+        public CosmeticsContext(DbContextOptions<CosmeticsContext> options)
             : base(options)
         {
         }
