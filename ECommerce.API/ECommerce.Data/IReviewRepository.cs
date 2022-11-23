@@ -5,6 +5,6 @@ namespace Data
 {
     public interface IReviewRepository
     {
-        public Review CreateReview(Review review);
+        public Review CreateReview(ReviewDTO review);
     }
 }

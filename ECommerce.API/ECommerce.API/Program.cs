@@ -21,6 +21,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CosmeticsDB")));
 builder.Services.AddScoped<IRepository, SQLRepository>();
+builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
 builder.Services.AddControllers();
 

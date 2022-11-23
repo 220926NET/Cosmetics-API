@@ -1,5 +1,6 @@
 using Data.Entities;
 using Microsoft.Extensions.Logging;
+using Models;
 
 namespace Data
 {
@@ -14,11 +15,12 @@ namespace Data
             this._context = context;
         }
 
-        public Review CreateReview(Review review)
+        public Review CreateReview(ReviewDTO review)
         {
-            _context.Reviews.Add(review);
+            Entities.Review reviewEntity = new Entities.Review{UserId = review.UserId, ProductId = review.ProductId, Text = review.Text, Rating = review.Rating};
+            _context.Reviews.Add(reviewEntity);
             _context.SaveChanges();
-            return review;
+            return reviewEntity;
         }
     }
 }

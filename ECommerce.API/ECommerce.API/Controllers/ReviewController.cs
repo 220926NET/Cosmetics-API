@@ -22,23 +22,22 @@ namespace API.Controllers
 
         
         [HttpPost]
-        public ActionResult<Review> Create([FromBody] Review review)
+        public ActionResult<Review> Create([FromBody] ReviewDTO review)
         {
             // Check if User model is valid
-            //if (!ModelState.IsValid)
-                //return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-            //var created = _repo.CreateReview(review);
-            //return Created($"{created.Id}", created);
-            return Ok();
+            Review created = _repo.CreateReview(review);
+            return Created($"{created.Id}", created);
         }
-        /*
+        
         [HttpGet("{reviewId}")]
         public ActionResult<List<Review>> GetById(int reviewId)
         {
             return Ok();
         }
-
+/*
         [HttpGet("product/{productId}")]
         public ActionResult<List<Review>> GetByProductId(int productId)
         {
