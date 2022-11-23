@@ -1,7 +1,7 @@
-﻿// using System;
-// using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-// using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Data.Entities
 {
@@ -42,7 +42,7 @@ namespace Data.Entities
                     .WithMany(p => p.Deals)
                     .HasForeignKey(d => d.Product)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Deals__Product__151B244E");
+                    .HasConstraintName("FK__Deals__Product__503BEA1C");
             });
 
             modelBuilder.Entity<Log>(entity =>
@@ -66,7 +66,7 @@ namespace Data.Entities
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.Purchaser)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Orders__Purchase__0D7A0286");
+                    .HasConstraintName("FK__Orders__Purchase__489AC854");
             });
 
             modelBuilder.Entity<OrderDetail>(entity =>
@@ -82,13 +82,13 @@ namespace Data.Entities
                 entity.HasOne(d => d.Order)
                     .WithMany()
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__OrderDeta__Order__0E6E26BF");
+                    .HasConstraintName("FK__OrderDeta__Order__498EEC8D");
 
                 entity.HasOne(d => d.Product)
                     .WithMany()
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__Produ__0F624AF8");
+                    .HasConstraintName("FK__OrderDeta__Produ__4A8310C6");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -116,24 +116,22 @@ namespace Data.Entities
 
                 entity.Property(e => e.ProductId).HasColumnName("ProductID");
 
-                entity.Property(e => e.Review1).HasColumnName("Review");
-
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Reviews)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Reviews__Product__114A936A");
+                    .HasConstraintName("FK__Reviews__Product__4C6B5938");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Reviews)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Reviews__UserId__10566F31");
+                    .HasConstraintName("FK__Reviews__UserId__4B7734FF");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D105347FDF2A87")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534DFEC1C09")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -155,13 +153,13 @@ namespace Data.Entities
                     .WithMany(p => p.Wishlists)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Wishlists__UserI__123EB7A3");
+                    .HasConstraintName("FK__Wishlists__UserI__4D5F7D71");
             });
 
             modelBuilder.Entity<WishlistDetail>(entity =>
             {
                 entity.HasKey(e => e.DetailId)
-                    .HasName("PK__Wishlist__135C316D41211A58");
+                    .HasName("PK__Wishlist__135C316D500D2639");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
@@ -171,13 +169,13 @@ namespace Data.Entities
                     .WithMany(p => p.WishlistDetails)
                     .HasForeignKey(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__WishlistDeta__ID__1332DBDC");
+                    .HasConstraintName("FK__WishlistDeta__ID__4E53A1AA");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WishlistDetails)
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__WishlistD__Produ__14270015");
+                    .HasConstraintName("FK__WishlistD__Produ__4F47C5E3");
             });
 
             OnModelCreatingPartial(modelBuilder);
