@@ -3,6 +3,8 @@ using Data.Entities;
 using Microsoft.Extensions.Logging;
 using System.Web.Helpers;
 using WishlistDetail = Data.Entities.WishlistDetail;
+using static System.Net.Mime.MediaTypeNames;
+using Microsoft.EntityFrameworkCore;
 // using System.Data.SqlClient;
 // using System.Linq;
 // using System.Net.Http.Headers;
@@ -24,9 +26,11 @@ namespace Data
             this._context = context;
         }
 
-        public void RegisterNewUser(Models.User userInfo) {
+        public void RegisterNewUser(Models.User userInfo)
+        {
             // Insert new user's info into table, with hashed password
-            _context.Add(new Entities.User {
+            _context.Add(new Entities.User
+            {
                 FirstName = userInfo.FirstName,
                 LastName = userInfo.LastName,
                 Email = userInfo.Email,
@@ -38,10 +42,12 @@ namespace Data
             return;
         }
         //create a new wishlist
-        public void CreateWishList(Models.User userInfo) {
+        public void CreateWishList(Models.User userInfo)
+        {
             //create a temp wishlist so that the constructor is used to create a HashSet of wishlistDetails
             Entities.Wishlist tempWishlist = new Entities.Wishlist();
-            _context.Add(new Entities.Wishlist {
+            _context.Add(new Entities.Wishlist
+            {
                 UserId = userInfo.ID,
                 WishlistDetails = tempWishlist.WishlistDetails
             });
@@ -50,18 +56,94 @@ namespace Data
             return;
         }
 
-        public bool EmailTaken(string email) {
-            // Checks if the given Email exists within the Users table
-            if (_context.Users.Any(u => u.Email == email))  return true;
-            else    return false;
+        public void CreateWishlistItem(int wishlistId, int productId)
+        {
+            //Post to the wishlistDetails Database
+            _context.Add(new Entities.WishlistDetail
+            {
+                Id = wishlistId,
+                ProductId = productId
+            });
+            _context.SaveChanges();
         }
-        public Models.User? VerifyCredentials(string email, string password) {
+
+        //Get Commands
+
+        public bool EmailTaken(string email)
+        {
+            // Checks if the given Email exists within the Users table
+            if (_context.Users.Any(u => u.Email == email)) return true;
+            else return false;
+        }
+        public Models.User? VerifyCredentials(string email, string password)
+        {
             Entities.User user = _context.Users.Where(u => u.Email == email).FirstOrDefault()!;
 
-            if (Crypto.VerifyHashedPassword(user.Password, password))   
-                return new Models.User(user.Id, user.FirstName, user.LastName, user.Email); 
-            else    return null;
+            if (Crypto.VerifyHashedPassword(user.Password, password))
+                return new Models.User(user.Id, user.FirstName, user.LastName, user.Email);
+            else return null;
         }
+
+        public Models.Wishlist GetWishlist(int userId)
+        {
+            Entities.Wishlist eWishList = new Entities.Wishlist();
+
+            //create a model of wishlist items
+            HashSet<Models.WishlistItem> wishlistSet = new HashSet<Models.WishlistItem>();
+
+            //eager loading
+            
+            if (_context.Wishlists.Any(w => w.UserId == userId))
+            {
+                var dbWishlist = _context.Wishlists
+                    .Include(wl => wl.WishlistDetails)
+                    .ThenInclude(wld => wld.Product)
+                    .FirstOrDefault();
+
+
+                if (dbWishlist != null)
+                {
+                    eWishList.Id = dbWishlist.Id;
+                    eWishList.UserId = dbWishlist.UserId;
+
+                    if(dbWishlist.WishlistDetails.Count > 0)
+                    {
+                        foreach(WishlistDetail detail in dbWishlist.WishlistDetails)
+                        {
+                            Models.WishlistItem itemToAdd = new Models.WishlistItem();
+                            Models.Product mProduct = new Models.Product(detail.Product.ProductId, detail.Product.ProductName, detail.Product.Inventory, detail.Product.Price, detail.Product.Image);
+                            itemToAdd.Product = mProduct;
+                            wishlistSet.Add(itemToAdd);
+                        }
+
+                    }
+
+                }
+
+            }
+              
+            
+            
+            //return  a model
+            Models.Wishlist mWishList = new Models.Wishlist(eWishList.Id,eWishList.UserId,wishlistSet);
+            return mWishList;
+        }
+
+
+        //Destroy Stuff
+        public void DeleteWishListItem(int detailId)
+        {
+            //This method does not check to see if the item exists in the DB before going to delete it
+            //This saves time, but error handling will need to implemented on the front end to ensure
+            //only existing wishlist items get called to be deleted
+            WishlistDetail wishItem = new WishlistDetail { DetailId = detailId };
+            _context.WishlistDetails.Attach(wishItem);
+            _context.WishlistDetails.Remove(wishItem);
+            _context.SaveChanges();
+        }
+
+
+
 
         /*
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -154,5 +236,5 @@ namespace Data
 
             _logger.LogInformation("Executed ReduceInventoryAsync");
         }*/
-    }
+    }   
 }

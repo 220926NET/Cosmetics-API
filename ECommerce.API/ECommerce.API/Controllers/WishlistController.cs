@@ -2,6 +2,7 @@
 using Data;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using Data.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,16 +30,23 @@ namespace ECommerce.API.Controllers
 
         // GET api/<WishlistController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Models.Wishlist Get(int id)
         {
-            return "value";
+            return _repo.GetWishlist(id);
         }
 
         // POST api/<WishlistController>
         [HttpPost]
-        public void Post(User userInfo)
+        public void Post(Models.User userInfo)
         {
             _repo.CreateWishList(userInfo);
+        }
+
+        // POST api/<WishlistController>
+        [HttpPost("wishlist/{wishlistId}/wishlistItem/{productId}")]
+        public void Post(int wishlistId, int productId)
+        {
+            _repo.CreateWishlistItem(wishlistId, productId);
         }
 
         // PUT api/<WishlistController>/5
@@ -48,9 +56,10 @@ namespace ECommerce.API.Controllers
         }
 
         // DELETE api/<WishlistController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("wishlist/wishlistItem/{detailId}")]
+        public void Delete(int detailId)
         {
+            _repo.DeleteWishListItem(detailId);
         }
     }
 }
