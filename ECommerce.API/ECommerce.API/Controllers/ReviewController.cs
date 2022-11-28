@@ -33,23 +33,29 @@ namespace API.Controllers
         }
         
         [HttpGet("{reviewId}")]
-        public ActionResult<List<Review>> GetById(int reviewId)
+        public ActionResult<Review> GetById(int reviewId)
         {
-            return Ok();
+            try
+            {
+                return Ok(_repo.GetByReviewId(reviewId));
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
-/*
+
         [HttpGet("product/{productId}")]
         public ActionResult<List<Review>> GetByProductId(int productId)
         {
-            return Ok();
+            return Ok(_repo.GetByProductId(productId));
         }
         
         [HttpGet("user/{userId}")]
         public ActionResult<List<Review>> GetByUserId(int userId)
         {
-            return Ok();
+            return Ok(_repo.GetByUserId(userId));
         }
-        */
         
         [HttpPut("{reviewId}")]
         public ActionResult Update(int reviewId)
