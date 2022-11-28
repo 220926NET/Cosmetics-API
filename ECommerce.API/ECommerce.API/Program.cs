@@ -23,12 +23,15 @@ builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options
 builder.Services.AddScoped<IRepository, SQLRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 
-/*
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+//builder.Services.AddControllers();
+
+// Prevents "A possible object cycle was detected" error
 builder.Services.AddControllers()
     .AddJsonOptions(i => 
         i.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
     );
-*/
+
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

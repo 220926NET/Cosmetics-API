@@ -16,12 +16,11 @@ namespace Data
             this._context = context;
         }
 
-        public Review CreateReview(ReviewDTO review)
+        public Review CreateReview(Review review)
         {
-            Entities.Review reviewEntity = new Entities.Review{UserId = review.UserId, ProductId = review.ProductId, Text = review.Text, Rating = review.Rating};
-            _context.Reviews.Add(reviewEntity);
+            _context.Reviews.Add(review);
             _context.SaveChanges();
-            return reviewEntity;
+            return _context.Reviews.Where(i => i.Id == review.Id).Include(i => i.User).Include(i => i.Product).First();
         }
 
         public Review GetByReviewId(int reviewId)
@@ -32,12 +31,22 @@ namespace Data
 
         public List<Review> GetByProductId(int productId)
         {
-            return _context.Reviews.Where(i => i.ProductId == productId).ToList();
+            return _context.Reviews.Where(i => i.ProductId == productId).Include(i => i.User).Include(i => i.Product).ToList();
         }
 
         public List<Review> GetByUserId(int userId)
         {
-            return _context.Reviews.Where(i => i.UserId == userId).ToList();
+            return _context.Reviews.Where(i => i.UserId == userId).Include(i => i.User).Include(i => i.Product).ToList();
+        }
+
+        public bool Delete(int reviewId)
+        {
+            var entity = _context.Reviews.First(i => i.Id == reviewId);
+            if (entity is null)
+                return false;
+            _context.Reviews.Remove(entity);
+            _context.SaveChanges();
+            return true;
         }
     }
 }
