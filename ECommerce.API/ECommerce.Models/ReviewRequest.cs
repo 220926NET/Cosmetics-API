@@ -1,6 +1,6 @@
 namespace Models;
 
-public class PostReviewDTO
+public class ReviewRequest
 {
         public int UserId { get; set; }
         public int ProductId { get; set; }

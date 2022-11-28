@@ -25,7 +25,7 @@ namespace API.Controllers
 
         
         [HttpPost]
-        public ActionResult<ReviewDTO> Create([FromBody] PostReviewDTO review)
+        public ActionResult<ReviewDTO> Create([FromBody] ReviewRequest review)
         {
             // Check if User model is valid
             if (!ModelState.IsValid)
