@@ -12,7 +12,7 @@ namespace Models
         public string name { get; set; }
         public int quantity { get; set; }
         public decimal price { get; set; }
-        public string description { get; set; }
+        public string? description { get; set; }
         public string image { get; set; }
 
         public Product() { }
@@ -24,6 +24,15 @@ namespace Models
             this.quantity = quantity;
             this.price = price;
             this.description = description;
+            this.image = image;
+        }
+        //overload for wishlist, don't need the description
+        public Product(int id, string name, int quantity, decimal price, string image)
+        {
+            this.id = id;
+            this.name = name;
+            this.quantity = quantity;
+            this.price = price;
             this.image = image;
         }
     }
