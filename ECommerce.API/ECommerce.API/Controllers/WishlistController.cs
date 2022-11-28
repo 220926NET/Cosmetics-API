@@ -21,15 +21,9 @@ namespace ECommerce.API.Controllers
             this._logger = logger;
         }
 
-        // GET: api/<WishlistController>
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
 
-        // GET api/<WishlistController>/5
-        [HttpGet("{id}")]
+        // GET api/<WishlistController>/userid/5
+        [HttpGet("userId/{id}")]
         public Models.Wishlist Get(int id)
         {
             return _repo.GetWishlist(id);
@@ -43,20 +37,14 @@ namespace ECommerce.API.Controllers
         }
 
         // POST api/<WishlistController>
-        [HttpPost("wishlist/{wishlistId}/wishlistItem/{productId}")]
+        [HttpPost("/{wishlistId}/wishlistItem/{productId}")]
         public void Post(int wishlistId, int productId)
         {
             _repo.CreateWishlistItem(wishlistId, productId);
         }
 
-        // PUT api/<WishlistController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
         // DELETE api/<WishlistController>/5
-        [HttpDelete("wishlist/wishlistItem/{detailId}")]
+        [HttpDelete("/wishlistItem/{detailId}")]
         public void Delete(int detailId)
         {
             _repo.DeleteWishListItem(detailId);
