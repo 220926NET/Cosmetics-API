@@ -1,5 +1,6 @@
 using Data;
 using Microsoft.EntityFrameworkCore;
+using Services; 
 //using Microsoft.AspNetCore.DataProtection.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,22 +23,24 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CosmeticsDB")));
 builder.Services.AddScoped<IRepository, SQLRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
+builder.Services.AddScoped<IProductRepo, ProductRepo>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-//builder.Services.AddControllers();
 
-// Prevents "A possible object cycle was detected" error
+
 builder.Services.AddControllers()
+    // Prevents "A possible object cycle was detected" error
     .AddJsonOptions(i => 
         i.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
     );
-
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
 
- builder.Services.AddSwaggerGen(options =>
+// Prevents "Failed to generate schema" error
+builder.Services.AddSwaggerGen(options =>
  {
        options.CustomSchemaIds(type => type.FullName);
  });

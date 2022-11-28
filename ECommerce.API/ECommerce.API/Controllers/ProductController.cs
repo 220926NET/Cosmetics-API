@@ -1,5 +1,6 @@
 ﻿using Data;
 using Models;
+using Services;
 //using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,30 +11,43 @@ namespace API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IRepository _repo;
+
+        private readonly IProductRepo _productRepo;
         private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IRepository repo, ILogger<ProductController> logger)
+        private readonly IProductService _productService;
+
+        public ProductController(IRepository repo, ILogger<ProductController> logger, IProductRepo productRepo, IProductService productService)
         {
             this._repo = repo;
             this._logger = logger;
+            this._productRepo = productRepo;
+            _productService = productService;
         }
 
 
-        // [HttpGet("{id}")]
-        // public async Task<ActionResult<Product>> GetOne(int id)
-        // {
-        //     _logger.LogInformation("api/product/{id} triggered");
-        //     try
-        //     {
-        //         //return Ok(await _repo.GetProductByIdAsync(id));
-        //         _logger.LogInformation("api/product/{id} completed successfully");
-        //     }
-        //     catch
-        //     {
-        //         return BadRequest();
-        //         _logger.LogWarning("api/product/{id} completed with errors");
-        //     }
-        // }
+        [HttpGet("{productType}")]
+        public async Task<ActionResult<ProductDTO>> GetAllLipStick(string productType)
+        {
+            List<Product> products = new List<Product>();
+            Console.WriteLine("product type is " + productType);
+
+
+            // _logger.LogInformation("api/product/{id} triggered");
+            // try
+            // {
+            //     //return Ok(await _repo.GetProductByIdAsync(id));
+            //     _logger.LogInformation("api/product/{id} completed successfully");
+            // }
+            // catch
+            // {
+            //     return BadRequest();
+            //     _logger.LogWarning("api/product/{id} completed with errors");
+            // }
+
+
+            return Ok(_productService.getAllProducts(productType));
+        }
 
         // [HttpGet]
         // public async Task<ActionResult<Product[]>> GetAll()
