@@ -22,6 +22,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CosmeticsDB")));
 builder.Services.AddScoped<IRepository, SQLRepository>();
+
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 
 /*
@@ -29,6 +30,7 @@ DI for product services
 */
 
 builder.Services.AddScoped<IProductService, ProductService>();
+
 
 builder.Services.AddControllers();
 
