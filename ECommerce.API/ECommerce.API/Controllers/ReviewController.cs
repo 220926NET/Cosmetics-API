@@ -36,11 +36,11 @@ namespace API.Controllers
         }
         
         [HttpGet("{reviewId}")]
-        public ActionResult<ReviewDTO> GetById(int reviewId)
+        public ActionResult<ReviewDTO> GetById(int reviewId, bool includeUser = false, bool includeProduct = false)
         {
             try
             {
-                return Ok(_mapper.Map<ReviewDTO>(_repo.GetByReviewId(reviewId)));
+                return Ok(_mapper.Map<ReviewDTO>(_repo.GetByReviewId(reviewId, includeUser, includeProduct)));
             }
             catch
             {
@@ -49,15 +49,15 @@ namespace API.Controllers
         }
 
         [HttpGet("product/{productId}")]
-        public ActionResult<List<ReviewDTO>> GetByProductId(int productId)
+        public ActionResult<List<ReviewDTO>> GetByProductId(int productId, bool includeUser = false, bool includeProduct = false)
         {
-            return Ok(_repo.GetByProductId(productId).Select(i => _mapper.Map<ReviewDTO>(i)).ToList());
+            return Ok(_repo.GetByProductId(productId, includeUser, includeProduct).Select(i => _mapper.Map<ReviewDTO>(i)).ToList());
         }
         
         [HttpGet("user/{userId}")]
-        public ActionResult<List<Review>> GetByUserId(int userId)
+        public ActionResult<List<Review>> GetByUserId(int userId, bool includeUser = false, bool includeProduct = false)
         {
-            return Ok(_repo.GetByUserId(userId).Select(i => _mapper.Map<ReviewDTO>(i)).ToList());
+            return Ok(_repo.GetByUserId(userId, includeUser, includeProduct).Select(i => _mapper.Map<ReviewDTO>(i)).ToList());
         }
         
         /*

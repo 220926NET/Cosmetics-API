@@ -23,20 +23,38 @@ namespace Data
             return _context.Reviews.Where(i => i.Id == review.Id).Include(i => i.User).Include(i => i.Product).First();
         }
 
-        public Review GetByReviewId(int reviewId)
+        public Review GetByReviewId(int reviewId, bool includeUser = false, bool includeProduct = false)
         {
-            //_context.Entry(post).Reference(p => p.Blog).Load();
-            return _context.Reviews.Where(i => i.Id == reviewId).Include(i => i.User).Include(i => i.Product).First();
+            var result = _context.Reviews.Where(i => i.Id == reviewId);
+            if (includeUser)
+                result = result.Include(i => i.User);
+            if (includeProduct)
+                result = result.Include(i => i.Product);
+            return result.First();
         }
 
-        public List<Review> GetByProductId(int productId)
+        public List<Review> GetByProductId(int productId, bool includeUser = false, bool includeProduct = false)
         {
-            return _context.Reviews.Where(i => i.ProductId == productId).Include(i => i.User).Include(i => i.Product).ToList();
+            //return _context.Reviews.Where(i => i.ProductId == productId).Include(i => i.User).Include(i => i.Product).ToList();
+
+            var result = _context.Reviews.Where(i => i.ProductId == productId);
+            if (includeUser)
+                result = result.Include(i => i.User);
+            if (includeProduct)
+                result = result.Include(i => i.Product);
+            return result.ToList();
         }
 
-        public List<Review> GetByUserId(int userId)
+        public List<Review> GetByUserId(int userId, bool includeUser = false, bool includeProduct = false)
         {
-            return _context.Reviews.Where(i => i.UserId == userId).Include(i => i.User).Include(i => i.Product).ToList();
+            //return _context.Reviews.Where(i => i.UserId == userId).Include(i => i.User).Include(i => i.Product).ToList();
+
+            var result = _context.Reviews.Where(i => i.UserId == userId);
+            if (includeUser)
+                result = result.Include(i => i.User);
+            if (includeProduct)
+                result = result.Include(i => i.Product);
+            return result.ToList();
         }
 
         public bool Delete(int reviewId)
