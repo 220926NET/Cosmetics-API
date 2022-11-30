@@ -6,9 +6,9 @@ namespace Data
     public interface IReviewRepository
     {
         public Review CreateReview(Review review);
-        public Review GetByReviewId(int reviewId);
-        public List<Review> GetByProductId(int productId);
-        public List<Review> GetByUserId(int userId);
+        public Review GetByReviewId(int reviewId, bool includeUser, bool includeProduct);
+        public List<Review> GetByProductId(int productId, bool includeUser, bool includeProduct);
+        public List<Review> GetByUserId(int userId, bool includeUser, bool includeProduct);
         public bool Delete(int reviewId);
     }
 }

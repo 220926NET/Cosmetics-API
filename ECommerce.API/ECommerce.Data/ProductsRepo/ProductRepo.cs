@@ -2,6 +2,7 @@ using Models;
 using Data;
 using Data.Entities;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data;
 public class ProductRepo : IProductRepo
@@ -112,6 +113,9 @@ public class ProductRepo : IProductRepo
 
     }
 
-
+    public Entities.Product GetById(int productId)
+    {
+        return _context.Products.Where(i => i.ProductId == productId).First();
+    }
 
 }

@@ -49,6 +49,20 @@ namespace API.Controllers
             return Ok(_productService.getAllProducts(productType));
         }
 
+        [HttpGet("id/{productId}")]
+        public ActionResult GetProductById(int productId)
+        {
+            try
+            {
+                Data.Entities.Product product = _productRepo.GetById(productId);
+                return Ok(product);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
         // [HttpGet]
         // public async Task<ActionResult<Product[]>> GetAll()
         // {

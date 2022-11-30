@@ -1,3 +1,4 @@
+using Data.Entities;
 using Models; 
 
 namespace Data; 
@@ -17,4 +18,5 @@ public interface IProductRepo {
 
      List<ProductDetailsDto
 > GetAllFoundation();
+     Entities.Product GetById(int productId);
 }
