@@ -84,48 +84,50 @@ namespace Data
             else return null;
         }
 
-        public Models.Wishlist GetWishlist(int userId)
+        public Models.Wishlist GetWishlist(int uId)
         {
-            Entities.Wishlist eWishList = new Entities.Wishlist();
-
+           
             //create a model of wishlist items
             HashSet<Models.WishlistItem> wishlistSet = new HashSet<Models.WishlistItem>();
 
+            Models.Wishlist mWishList = new Models.Wishlist(0,0,wishlistSet);
             //eager loading
-            
-            if (_context.Wishlists.Any(w => w.UserId == userId))
+
+            if (_context.Wishlists.Any(w => w.UserId == uId))
             {
                 var dbWishlist = _context.Wishlists
+                    .Where(w => w.UserId == uId)
                     .Include(wl => wl.WishlistDetails)
                     .ThenInclude(wld => wld.Product)
                     .FirstOrDefault();
 
 
-                if (dbWishlist != null)
-                {
-                    eWishList.Id = dbWishlist.Id;
-                    eWishList.UserId = dbWishlist.UserId;
+                //if (_context.Wishlists.Any(w => w.UserId == uId))
+                //{
+                //    var dbWishlist = _context.Wishlists
+                //        .Include(wl => wl.WishlistDetails)
+                //        .ThenInclude(wld => wld.Product);
 
+
+                    if (dbWishlist != null)
+                {
                     if(dbWishlist.WishlistDetails.Count > 0)
                     {
                         foreach(WishlistDetail detail in dbWishlist.WishlistDetails)
                         {
-                            Models.WishlistItem itemToAdd = new Models.WishlistItem();
-                            Models.Product mProduct = new Models.Product(detail.Product.ProductId, detail.Product.ProductName, detail.Product.Inventory, detail.Product.Price, detail.Product.Image);
-                            itemToAdd.Product = mProduct;
+                            
+                            Models.Product mProduct = new Models.Product(detail.Product.ProductId, detail.Product.ProductName, detail.Product.Inventory, detail.Product.Price, detail.Product.Description, detail.Product.Image, detail.Product.ColourName, detail.Product.HexValue);
+                            Models.WishlistItem itemToAdd = new Models.WishlistItem(detail.DetailId, detail.Id,detail.ProductId, mProduct);
                             wishlistSet.Add(itemToAdd);
                         }
 
                     }
+                    mWishList.id = dbWishlist.Id;
+                    mWishList.userId = dbWishlist.UserId;
 
                 }
-
             }
-              
-            
-            
             //return  a model
-            Models.Wishlist mWishList = new Models.Wishlist(eWishList.Id,eWishList.UserId,wishlistSet);
             return mWishList;
         }
 
