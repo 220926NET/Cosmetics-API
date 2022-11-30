@@ -90,7 +90,7 @@ public class ProductRepo : IProductRepo
                 Inventory = item.Inventory,
                 Price = item.Price,
                 Description = item.Description!,
-                ImageUrl = item.Image!,
+                Image = item.Image!,
                 ColorHexValues = new List<string>() { item.HexValue }
             };
 

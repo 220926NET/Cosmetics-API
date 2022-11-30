@@ -7,6 +7,14 @@ namespace Models
         public int ProductId { get; set; }
 
         public Product Product { get; set; } = null!;
+
+        public WishlistItem(int dId, int id, int pId, Product p)
+        {
+            DetailId = dId;
+            Id = id;
+            ProductId = pId;
+            Product = p;
+        }
     }      
 
 }
