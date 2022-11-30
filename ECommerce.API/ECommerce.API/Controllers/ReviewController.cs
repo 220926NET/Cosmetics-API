@@ -40,7 +40,9 @@ namespace API.Controllers
         {
             try
             {
-                return Ok(_mapper.Map<ReviewDTO>(_repo.GetByReviewId(reviewId, includeUser, includeProduct)));
+                Review review = _repo.GetByReviewId(reviewId, includeUser, includeProduct);
+                ReviewDTO dto = _mapper.Map<ReviewDTO>(review);
+                return Ok(dto);
             }
             catch
             {
@@ -51,13 +53,31 @@ namespace API.Controllers
         [HttpGet("product/{productId}")]
         public ActionResult<List<ReviewDTO>> GetByProductId(int productId, bool includeUser = false, bool includeProduct = false)
         {
-            return Ok(_repo.GetByProductId(productId, includeUser, includeProduct).Select(i => _mapper.Map<ReviewDTO>(i)).ToList());
+            try
+            {
+                List<Review> reviewList = _repo.GetByProductId(productId, includeUser, includeProduct);
+                List<ReviewDTO> dtoList = reviewList.Select(i => _mapper.Map<ReviewDTO>(i)).ToList();
+                return Ok(dtoList);
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
         
         [HttpGet("user/{userId}")]
-        public ActionResult<List<Review>> GetByUserId(int userId, bool includeUser = false, bool includeProduct = false)
+        public ActionResult<List<ReviewDTO>> GetByUserId(int userId, bool includeUser = false, bool includeProduct = false)
         {
-            return Ok(_repo.GetByUserId(userId, includeUser, includeProduct).Select(i => _mapper.Map<ReviewDTO>(i)).ToList());
+            try
+            {
+                List<Review> reviewList = _repo.GetByUserId(userId, includeUser, includeProduct);
+                List<ReviewDTO> dtoList = reviewList.Select(i => _mapper.Map<ReviewDTO>(i)).ToList();
+                return Ok(dtoList);
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
         
         /*
@@ -75,6 +95,5 @@ namespace API.Controllers
                 return NoContent();
             return NotFound();
         }
-        
     }
 }
