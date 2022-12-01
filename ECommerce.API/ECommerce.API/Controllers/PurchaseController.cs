@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
         [HttpPut("Purchase")]
-        public  ActionResult<ProductDTO[]> Purchase(ProductDTO[] purchaseProducts)
+        public  ActionResult Purchase(ProductDTO[] purchaseProducts)
         {   
             // product list if purchase success
             List<ProductDTO> updatedProductList = new List<ProductDTO>();
