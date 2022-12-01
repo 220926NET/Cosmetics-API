@@ -1,49 +1,55 @@
-using Data; 
-using Models; 
+using Data;
+using Models;
 
 
-namespace Services; 
-public class ProductService : IProductService {
+namespace Services;
+public class ProductService : IProductService
+{
 
-    private readonly IProductRepo _repo; 
+    private readonly IProductRepo _repo;
 
     public ProductService(IProductRepo productRepo)
     {
-        _repo = productRepo; 
+        _repo = productRepo;
     }
 
 
     public List<ProductDetailsDto
-> getAllProducts(string product){
-        
+> getAllProducts(string product)
+    {
+
         List<ProductDetailsDto
 > products = new List<ProductDetailsDto
 >();
 
-        if(product == "lipstick"){
-            //todo return all lipstick
+        if (product == "lipstick")
+        {
             products = _repo.GetAllLipsticks();
-            return products; 
+            return products;
         }
-        if(product == "eyeshadow"){
-            //todo return all lipstick
+        if (product == "eyeshadow")
+        {
+
             products = _repo.GetAllEyeShadow();
         }
-        if(product == "eyeliner"){
-            //todo return all lipstick
+        if (product == "eyeliner")
+        {
+
             products = _repo.GetAllEyeLiner();
         }
-        if(product == "foundation"){
-            //todo return all lipstick
+        if (product == "foundation")
+        {
+
             products = _repo.GetAllFoundation();
         }
-        if(product == "blush"){
-            //todo return all lipstick
+        if (product == "blush")
+        {
+
             products = _repo.GetAllBlush();
         }
 
-        
-        return products; 
+
+        return products;
     }
 
 }

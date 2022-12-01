@@ -27,7 +27,7 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "lipstick",
-      ImageUrl = "https://test.com",
+      Image = "https://test.com",
       ColorHexValues = new List<string>() { "#c55555" },
 
   };
@@ -65,7 +65,7 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "eyeshadows",
-      ImageUrl = "https://test.com",
+      Image = "https://test.com",
       ColorHexValues = new List<string>() { "#c55555" },
 
   };
@@ -96,7 +96,7 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "eyeliner",
-      ImageUrl = "https://test.com",
+      Image = "https://test.com",
       ColorHexValues = new List<string>() { "#c55555" },
 
   };
@@ -127,7 +127,7 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "foundation",
-      ImageUrl = "https://test.com",
+      Image = "https://test.com",
       ColorHexValues = new List<string>() { "#c55555" },
 
   };
@@ -158,7 +158,7 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "blush",
-      ImageUrl = "https://test.com",
+      Image = "https://test.com",
       ColorHexValues = new List<string>() { "#c55555" },
 
   };
