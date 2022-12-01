@@ -31,21 +31,34 @@ public class ProductRepo : IProductRepo
             if (lastProduct != item.ApiId) {
                 lastProduct = item.ApiId;
 
-                products.Add(new ProductDetailsDto()
-                {
-                    Id = item.ProductId,
-                    ApiId = item.ApiId,
-                    Name = item.ProductName,
-                    Type = item.ProductType,
-                    Brand = item.Brand,
-                    Inventory = item.Inventory,
-                    Price = item.Price,
-                    Description = item.Description!,
-                    Image = item.Image!,
-                    HexValue = item.HexValue!,
-                    Discount = DiscountPercent(item.ApiId)
-                });
-            }
+            ProductDetailsDto product = new ProductDetailsDto()
+            {
+                Id = item.ProductId,
+                ApiId = item.ApiId,
+                Name = item.ProductName,
+                Type = item.ProductType,
+                Brand = item.Brand,
+                Inventory = item.Inventory,
+                Price = item.Price,
+                Description = item.Description!,
+                Image = item.Image!,
+                HexValue = item.HexValue!,
+                Discount = DiscountPercent(item.ApiId)
+            };
+
+            // if (products.Count > 0)
+            // {
+
+            //     if (products[products.Count - 1].Name == product.Name)
+            //     {
+            //         products[products.Count - 1].HexValue.Add(item.HexValue);
+            //     }
+            // }
+            // else
+            // {
+            //     products.Add(product);
+            // }
+            products.Add(product);
         }
 
         return products;
