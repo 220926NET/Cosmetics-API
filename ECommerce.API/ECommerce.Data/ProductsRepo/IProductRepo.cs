@@ -18,5 +18,6 @@ public interface IProductRepo {
 
      List<ProductDetailsDto
 > GetAllFoundation();
-     Entities.Product GetById(int productId);
+     ProductDetailsDto GetById(int productId);
+     List<ProductDetailsDto> GetByApiId(int apiId);
 }

@@ -56,8 +56,22 @@ namespace API.Controllers
         {
             try
             {
-                Data.Entities.Product product = _productRepo.GetById(productId);
+                ProductDetailsDto product = _productRepo.GetById(productId);
                 return Ok(product);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("apiId/{apiId}")]
+        public ActionResult<List<ProductDetailsDto>> GetProductByApiId(int apiId)
+        {
+            try
+            {
+                List<ProductDetailsDto> list = _productRepo.GetByApiId(apiId);
+                return Ok(list);
             }
             catch
             {
