@@ -84,6 +84,7 @@ public class ProductRepo : IProductRepo
             ProductDetailsDto product = new ProductDetailsDto()
             {
                 Id = item.ProductId,
+                ApiId = item.ApiId,
                 Name = item.ProductName,
                 Type = item.ProductType,
                 Brand = item.Brand,
