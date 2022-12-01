@@ -145,6 +145,16 @@ namespace Data
         }
 
 
+        //Updated quantity for purchase
+        public void ReduceInventoryById(int productId, int purchaseQuantity)
+        {
+            var product = _context.Products.FirstOrDefault(item => item.ProductId == productId);
+            if(product != null){
+                product.Inventory = product.Inventory - purchaseQuantity;
+                _context.SaveChanges();
+            }
+            
+        }
 
 
         /*
