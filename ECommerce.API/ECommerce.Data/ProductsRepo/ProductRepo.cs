@@ -147,31 +147,26 @@ public class ProductRepo : IProductRepo
                 };
     }
 
-    public ProductDetailsDto GetByApiId(int apiId)
+    public List<ProductDetailsDto> GetByApiId(int apiId)
     {
+        List<ProductDetailsDto> info = new List<ProductDetailsDto>();
 
-        List<Entities.Product> info = _context.Products.Where(i => i.ApiId == apiId).ToList();
-
-        ProductDetailsDto product = new ProductDetailsDto()
+        foreach (Entities.Product pInfo in _context.Products.Where(i => i.ApiId == apiId).ToList()) {
+            info.Add(new ProductDetailsDto()
                 {
-                    Id = info[0].ProductId,
-                    Name = info[0].ProductName,
-                    Type = info[0].ProductType,
-                    Brand = info[0].Brand,
-                    Inventory = info[0].Inventory,
-                    Price = info[0].Price,
-                    Description = info[0].Description!,
-                    Image = info[0].Image!,
-                    ColorHexValues = new List<string>() { info[0].HexValue! },
-                    Discount = DiscountPercent(info[0].ApiId)
-                };
-        
-        if (info.Count > 1) {
-            for (int i = 1; i < info.Count; i++) {
-                product.ColorHexValues.Add(info[i].HexValue!);
-            }
+                    Id = pInfo.ProductId,
+                    Name = pInfo.ProductName,
+                    Type = pInfo.ProductType,
+                    Brand = pInfo.Brand,
+                    Inventory = pInfo.Inventory,
+                    Price = pInfo.Price,
+                    Description = pInfo.Description!,
+                    Image = pInfo.Image!,
+                    ColorHexValues = new List<string>() { pInfo.HexValue! },
+                    Discount = DiscountPercent(apiId)
+                });
         }
 
-        return product;
+        return info;
     }
 }
