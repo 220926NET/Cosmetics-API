@@ -25,23 +25,29 @@ namespace API.Controllers
             _productService = productService;
         }
 
-
+        /// <c> GetAllProductsByType </c>
+        /// <returns> a list of ProductDtos
         [HttpGet("{productType}")]
-        public async Task<ActionResult<ProductDTO>> GetAllProducts(string productType)
+        public async Task<ActionResult<ProductDetailsDto>> GetAllProductsByType(string productType)
         {
 
-            _logger.LogInformation("Get all products triggered");
-            try
+            if (ProductsValidator.IsValidProductType(productType))
             {
                 _logger.LogInformation("api/product/{id} completed successfully");
                 return Ok(_productService.getAllProducts(productType));
-            }
-            catch
-            {
-                _logger.LogWarning("unable to find product " + productType);
-                return NotFound();
 
             }
+            else
+            {
+                _logger.LogWarning("User queried product type of  " + productType);
+                return NotFound("Products types available are : foundation, blush, lipstick, eyeliner, eyeshadow");
+
+            }
+
+
+
+
+
 
         }
 
