@@ -1,7 +1,6 @@
 using Data;
 using Models;
 
-
 namespace Services;
 public class ProductService : IProductService
 {
