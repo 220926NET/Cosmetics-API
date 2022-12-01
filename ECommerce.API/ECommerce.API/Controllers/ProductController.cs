@@ -27,26 +27,22 @@ namespace API.Controllers
 
 
         [HttpGet("{productType}")]
-        public async Task<ActionResult<ProductDTO>> GetAllLipStick(string productType)
+        public async Task<ActionResult<ProductDTO>> GetAllProducts(string productType)
         {
-            List<Product> products = new List<Product>();
-            Console.WriteLine("product type is " + productType);
 
+            _logger.LogInformation("Get all products triggered");
+            try
+            {
+                _logger.LogInformation("api/product/{id} completed successfully");
+                return Ok(_productService.getAllProducts(productType));
+            }
+            catch
+            {
+                _logger.LogWarning("unable to find product " + productType);
+                return NotFound();
 
-            // _logger.LogInformation("api/product/{id} triggered");
-            // try
-            // {
-            //     //return Ok(await _repo.GetProductByIdAsync(id));
-            //     _logger.LogInformation("api/product/{id} completed successfully");
-            // }
-            // catch
-            // {
-            //     return BadRequest();
-            //     _logger.LogWarning("api/product/{id} completed with errors");
-            // }
+            }
 
-
-            return Ok(_productService.getAllProducts(productType));
         }
 
         [HttpGet("id/{productId}")]
