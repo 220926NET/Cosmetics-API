@@ -54,7 +54,7 @@ namespace API.Controllers
         {
             try
             {
-                Data.Entities.Product product = _productRepo.GetById(productId);
+                ProductDetailsDto product = _productRepo.GetById(productId);
                 return Ok(product);
             }
             catch

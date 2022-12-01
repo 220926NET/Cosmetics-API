@@ -24,6 +24,8 @@ public class ProductDetailsDto
 
     public List<String>? ColorHexValues { get; set; }
 
+    public double Discount { get; set; } = 0.00;
+
     public ProductDetailsDto()
     {
 

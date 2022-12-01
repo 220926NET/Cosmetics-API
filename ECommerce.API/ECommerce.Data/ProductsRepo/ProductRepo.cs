@@ -23,7 +23,7 @@ public class ProductRepo : IProductRepo
     {
 
 
-        var lipstick = _context.Products.Where(product => product.ProductType == "lipstick");
+        var lipstick = _context.Products.Where(product => product.ProductType == "lipstick").ToList();
 
         List<ProductDetailsDto> lipsticks = GetProductList(lipstick);
 
@@ -34,7 +34,7 @@ public class ProductRepo : IProductRepo
     {
 
 
-        var blush = _context.Products.Where(product => product.ProductType == "blush");
+        var blush = _context.Products.Where(product => product.ProductType == "blush").ToList();
 
 
 
@@ -45,7 +45,7 @@ public class ProductRepo : IProductRepo
     {
 
 
-        var eyeshadow = _context.Products.Where(product => product.ProductType == "eyeshadow");
+        var eyeshadow = _context.Products.Where(product => product.ProductType == "eyeshadow").ToList();
 
         return GetProductList(eyeshadow);
     }
@@ -54,7 +54,7 @@ public class ProductRepo : IProductRepo
     {
 
 
-        var eyeliner = _context.Products.Where(product => product.ProductType == "eyeliner");
+        var eyeliner = _context.Products.Where(product => product.ProductType == "eyeliner").ToList();
 
 
         return GetProductList(eyeliner);
@@ -64,7 +64,7 @@ public class ProductRepo : IProductRepo
     public List<ProductDetailsDto> GetAllFoundation()
     {
 
-        var foundation = _context.Products.Where(product => product.ProductType == "foundation");
+        var foundation = _context.Products.Where(product => product.ProductType == "foundation").ToList();
 
 
         return GetProductList(foundation);
@@ -73,7 +73,7 @@ public class ProductRepo : IProductRepo
 
 
 
-    public List<ProductDetailsDto> GetProductList(IQueryable<Entities.Product> result)
+    public List<ProductDetailsDto> GetProductList(List<Entities.Product> result)
     {
 
         List<ProductDetailsDto> products = new List<ProductDetailsDto>();
@@ -91,7 +91,8 @@ public class ProductRepo : IProductRepo
                 Price = item.Price,
                 Description = item.Description!,
                 Image = item.Image!,
-                ColorHexValues = new List<string>() { item.HexValue }
+                ColorHexValues = new List<string>() { item.HexValue },
+                Discount = DiscountPercent(item.ApiId)
             };
 
             if (products.Count > 0)
@@ -113,9 +114,37 @@ public class ProductRepo : IProductRepo
 
     }
 
-    public Entities.Product GetById(int productId)
+    private double DiscountPercent(int productId) {
+        double discount = 0.00;
+        // Check if a Deal for the specified Product's ID exists
+        if (_context.Deals.Any(d => d.Product == productId)) {
+            foreach (Deal deal in _context.Deals.Where(d => d.Product == productId)) {
+                if (deal.StartTime <= DateTime.UtcNow && deal.EndTime >= DateTime.UtcNow) {
+                    discount += (double) deal.Discount;
+                }
+            }
+        }
+        
+        return discount;
+    }
+
+    public ProductDetailsDto GetById(int productId)
     {
-        return _context.Products.Where(i => i.ProductId == productId).First();
+        Entities.Product info = _context.Products.Where(i => i.ProductId == productId).First();
+
+        return new ProductDetailsDto()
+                {
+                    Id = info.ProductId,
+                    Name = info.ProductName,
+                    Type = info.ProductType,
+                    Brand = info.Brand,
+                    Inventory = info.Inventory,
+                    Price = info.Price,
+                    Description = info.Description!,
+                    Image = info.Image!,
+                    ColorHexValues = new List<string>() { info.HexValue },
+                    Discount = DiscountPercent(info.ApiId)
+                };
     }
 
 }
