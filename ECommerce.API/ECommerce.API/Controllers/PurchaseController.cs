@@ -1,7 +1,7 @@
 using Data;
 using Models;
-using Services;
-using Data.Entities;
+// using Services;
+// using Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -23,18 +23,18 @@ namespace API.Controllers
         }
 
         [HttpPut("Purchase")]
-        public  ActionResult<ProductDTO[]> Purchase(ProductDTO[] purchaseProducts)
+        public  ActionResult<OrderDTO[]> Purchase(OrderDTO[] purchaseProducts)
         {   
             // product list if purchase success
-            List<ProductDTO> updatedProductList = new List<ProductDTO>();
+            List<OrderDTO> updatedProductList = new List<OrderDTO>();
 
             // check quantity for each product
-            foreach(ProductDTO item in purchaseProducts){
+            foreach(OrderDTO item in purchaseProducts){
 
                 // get product quantity
-                ProductDetailsDto product = _productRepo.GetById(item.id);
+                ProductDetailsDto product = _productRepo.GetById(item.Id);
                 // if inventory is insufficient
-                if(product.Inventory - item.quantity < 0){
+                if(product.Inventory - item.Quantity < 0){
 
                     //update inventory
                     // _repo.ReduceInventoryById(item.id, item.quantity);
@@ -47,14 +47,13 @@ namespace API.Controllers
 
             // all products' inventory is sufficient
             // do trasaction
-            foreach(ProductDTO item in purchaseProducts)
+            foreach(OrderDTO item in purchaseProducts)
             {
-                _repo.ReduceInventoryById(item.id, item.quantity);
+                _repo.ReduceInventoryById(item.Id, item.Quantity);
                 updatedProductList.Add(item);
             }
 
             return NoContent();
         }
     }
-
 }
