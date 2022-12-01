@@ -28,7 +28,7 @@ public class ProductServiceTests
       Price = 8.99m,
       Description = "lipstick",
       Image = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllLipsticks()).Returns(new List<ProductDetailsDto
@@ -66,7 +66,7 @@ public class ProductServiceTests
       Price = 8.99m,
       Description = "eyeshadows",
       Image = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllEyeShadow()).Returns(new List<ProductDetailsDto
@@ -97,7 +97,7 @@ public class ProductServiceTests
       Price = 8.99m,
       Description = "eyeliner",
       Image = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      HexValue = "#c55555" ,
 
   };
         _productRepoMock.Setup(repo => repo.GetAllEyeLiner()).Returns(new List<ProductDetailsDto
@@ -128,7 +128,7 @@ public class ProductServiceTests
       Price = 8.99m,
       Description = "foundation",
       Image = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllFoundation()).Returns(new List<ProductDetailsDto
@@ -159,7 +159,7 @@ public class ProductServiceTests
       Price = 8.99m,
       Description = "blush",
       Image = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllBlush()).Returns(new List<ProductDetailsDto

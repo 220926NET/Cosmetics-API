@@ -91,23 +91,23 @@ public class ProductRepo : IProductRepo
                 Price = item.Price,
                 Description = item.Description!,
                 Image = item.Image!,
-                ColorHexValues = new List<string>() { item.HexValue },
+                HexValue = item.HexValue!,
                 Discount = DiscountPercent(item.ApiId)
             };
 
-            if (products.Count > 0)
-            {
+            // if (products.Count > 0)
+            // {
 
-                if (products[products.Count - 1].Name == product.Name)
-                {
-                    products[products.Count - 1].ColorHexValues.Add(item.HexValue);
-                }
-            }
-            else
-            {
-                products.Add(product);
-            }
-
+            //     if (products[products.Count - 1].Name == product.Name)
+            //     {
+            //         products[products.Count - 1].HexValue.Add(item.HexValue);
+            //     }
+            // }
+            // else
+            // {
+            //     products.Add(product);
+            // }
+            products.Add(product);
         }
 
         return products;
@@ -142,7 +142,7 @@ public class ProductRepo : IProductRepo
                     Price = info.Price,
                     Description = info.Description!,
                     Image = info.Image!,
-                    ColorHexValues = new List<string>() { info.HexValue },
+                    HexValue = info.HexValue!,
                     Discount = DiscountPercent(info.ApiId)
                 };
     }
@@ -164,7 +164,7 @@ public class ProductRepo : IProductRepo
                     Description = pInfo.Description!,
                     Image = pInfo.Image!,
                     ColourName = pInfo.ColourName!,
-                    ColorHexValues = new List<string>() { pInfo.HexValue! },
+                    HexValue = pInfo.HexValue!,
                     Discount = DiscountPercent(apiId)
                 });
         }

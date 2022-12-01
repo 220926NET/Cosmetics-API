@@ -58,55 +58,5 @@ namespace API.Controllers
                 return NotFound();
             }
         }
-
-        // [HttpGet]
-        // public async Task<ActionResult<Product[]>> GetAll()
-        // {
-        //     _logger.LogInformation("api/product triggered");
-        //     try
-        //     {
-        //         return Ok(await _repo.GetAllProductsAsync());
-        //         _logger.LogInformation("api/product completed successfully");
-        //     }
-        //     catch
-        //     {
-        //         return BadRequest();
-        //         _logger.LogWarning("api/product completed with errors");
-        //     }
-        // }
-
-        // [HttpPatch]
-        // public async Task<ActionResult<Product[]>> Purchase([FromBody] ProductDTO[] purchaseProducts)
-        // {
-        //     _logger.LogInformation("PATCH api/product triggered");
-        //     List<Product> products = new List<Product>();
-        //     try
-        //     {
-        //         foreach(ProductDTO item in purchaseProducts)
-        //         {
-        //             Product tmp = await _repo.GetProductByIdAsync(item.id);
-        //             if ((tmp.quantity - item.quantity) >= 0)
-        //             {
-        //                 await _repo.ReduceInventoryByIdAsync(item.id, item.quantity);
-        //                 products.Add(await _repo.GetProductByIdAsync(item.id));
-        //             }
-        //             else
-        //             {
-        //                 throw new Exception("Insuffecient inventory.");
-        //             }
-        //         }
-        //         return Ok(products);
-        //         _logger.LogInformation("PATCH api/product completed successfully");
-        //     }
-        //     catch
-        //     {
-        //         return BadRequest();
-        //         _logger.LogWarning("PATCH api/product completed with errors");
-
-        //     }
-
-
-        // }
-
     }
 }

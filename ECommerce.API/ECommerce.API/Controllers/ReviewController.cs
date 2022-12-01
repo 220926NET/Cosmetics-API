@@ -4,7 +4,6 @@ using Models;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 
-
 namespace API.Controllers
 {
     [ApiController]
