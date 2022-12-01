@@ -10,13 +10,11 @@ namespace API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepo _productRepo;
-        private readonly IProductService _productService;
         private readonly ILogger<ProductController> _logger;
 
-        public ProductController(ILogger<ProductController> logger, IProductRepo productRepo, IProductService productService) {
+        public ProductController(ILogger<ProductController> logger, IProductRepo productRepo) {
             this._logger = logger;
             this._productRepo = productRepo;
-            this._productService = productService;
         }
 
         /// <c> GetAllProductsByType </c>
@@ -25,7 +23,7 @@ namespace API.Controllers
         public ActionResult<ProductDetailsDto> GetAllProductsByType(string productType) {
             if (ProductsValidator.IsValidProductType(productType)) {
                 //_logger.LogInformation("api/product/{id} completed successfully");
-                return Ok(_productService.getAllProducts(productType));
+                return Ok(_productRepo.GetProductList(productType));
             }
             else {
                 _logger.LogWarning("User queried product type of  " + productType);
