@@ -155,6 +155,7 @@ public class ProductRepo : IProductRepo
             info.Add(new ProductDetailsDto()
                 {
                     Id = pInfo.ProductId,
+                    ApiId = pInfo.ApiId,
                     Name = pInfo.ProductName,
                     Type = pInfo.ProductType,
                     Brand = pInfo.Brand,
@@ -162,6 +163,7 @@ public class ProductRepo : IProductRepo
                     Price = pInfo.Price,
                     Description = pInfo.Description!,
                     Image = pInfo.Image!,
+                    ColourName = pInfo.ColourName!,
                     ColorHexValues = new List<string>() { pInfo.HexValue! },
                     Discount = DiscountPercent(apiId)
                 });
