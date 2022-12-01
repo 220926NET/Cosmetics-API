@@ -63,6 +63,20 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("apiId/{apiId}")]
+        public ActionResult<List<ProductDetailsDto>> GetProductByApiId(int apiId)
+        {
+            try
+            {
+                List<ProductDetailsDto> list = _productRepo.GetByApiId(apiId);
+                return Ok(list);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
         // [HttpGet]
         // public async Task<ActionResult<Product[]>> GetAll()
         // {
