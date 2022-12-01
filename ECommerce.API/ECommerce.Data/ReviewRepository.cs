@@ -23,6 +23,11 @@ namespace Data
             return _context.Reviews.Where(i => i.Id == review.Id).Include(i => i.User).Include(i => i.Product).First();
         }
 
+        public int ApiIdToProductId(int apiId)
+        {
+            return _context.Products.Where(i => i.ApiId == apiId).First().ProductId;
+        }
+
         public Review GetByReviewId(int reviewId, bool includeUser = false, bool includeProduct = false)
         {
             var result = _context.Reviews.Where(i => i.Id == reviewId);
@@ -35,8 +40,6 @@ namespace Data
 
         public List<Review> GetByProductId(int productId, bool includeUser = false, bool includeProduct = false)
         {
-            //return _context.Reviews.Where(i => i.ProductId == productId).Include(i => i.User).Include(i => i.Product).ToList();
-
             var result = _context.Reviews.Where(i => i.ProductId == productId);
             if (includeUser)
                 result = result.Include(i => i.User);
@@ -47,8 +50,6 @@ namespace Data
 
         public List<Review> GetByUserId(int userId, bool includeUser = false, bool includeProduct = false)
         {
-            //return _context.Reviews.Where(i => i.UserId == userId).Include(i => i.User).Include(i => i.Product).ToList();
-
             var result = _context.Reviews.Where(i => i.UserId == userId);
             if (includeUser)
                 result = result.Include(i => i.User);

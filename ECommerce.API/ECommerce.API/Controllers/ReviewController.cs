@@ -24,14 +24,25 @@ namespace API.Controllers
 
         
         [HttpPost]
-        public ActionResult<ReviewDTO> Create([FromBody] ReviewRequest review)
+        public ActionResult<ReviewDTO> Create([FromBody] ReviewRequest reviewRequest)
         {
-            // Check if User model is valid
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            try 
+            {
+                // Check if User model is valid
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
 
-            Review created = _repo.CreateReview(_mapper.Map<Review>(review));
-            return Created($"{created.Id}", _mapper.Map<ReviewDTO>(created));
+                Review request = _mapper.Map<Review>(reviewRequest);
+                int apiId = reviewRequest.ApiId;
+                request.ProductId = _repo.ApiIdToProductId(apiId);
+
+                request = _repo.CreateReview(request);
+                return Created($"{request.Id}", _mapper.Map<ReviewDTO>(request));
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
         
         [HttpGet("{reviewId}")]
