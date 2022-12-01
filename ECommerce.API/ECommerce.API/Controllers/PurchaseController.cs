@@ -32,7 +32,7 @@ namespace API.Controllers
             foreach(ProductDTO item in purchaseProducts){
 
                 // get product quantity
-                Data.Entities.Product product = _productRepo.GetById(item.id);
+                ProductDetailsDto product = _productRepo.GetById(item.id);
                 // if inventory is insufficient
                 if(product.Inventory - item.quantity < 0){
 

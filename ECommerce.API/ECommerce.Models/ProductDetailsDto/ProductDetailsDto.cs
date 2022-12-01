@@ -5,6 +5,7 @@ public class ProductDetailsDto
 {
 
     public int Id { get; set; }
+    public int ApiId { get; set; }
 
     public string Name { get; set; }
 
@@ -20,6 +21,8 @@ public class ProductDetailsDto
     public string Description { get; set; }
 
     public string Image { get; set; }
+
+    public string ColourName {get; set;}
 
 
     public List<String>? ColorHexValues { get; set; }
