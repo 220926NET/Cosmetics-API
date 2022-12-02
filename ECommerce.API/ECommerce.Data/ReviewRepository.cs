@@ -23,9 +23,16 @@ namespace Data
             return _context.Reviews.Where(i => i.Id == review.Id).Include(i => i.User).Include(i => i.Product).First();
         }
 
-        public int ApiIdToProductId(int apiId)
+        // Returns the Primary Product Id associated with the given API Id
+        public int ApiIdToPrimaryProductId(int apiId)
         {
             return _context.Products.Where(i => i.ApiId == apiId).First().ProductId;
+        }
+
+        // Returns the Primary Product Id associated with the given Product Id
+        public int ProductIdToPrimaryProductId(int productId)
+        {
+            return ApiIdToPrimaryProductId(_context.Products.Where(i => i.ProductId == productId).First().ApiId);
         }
 
         public Review GetByReviewId(int reviewId, bool includeUser = false, bool includeProduct = false)
@@ -36,6 +43,38 @@ namespace Data
             if (includeProduct)
                 result = result.Include(i => i.Product);
             return result.First();
+        }
+
+        public List<Review> GetByApiId(int apiId, bool includeUser = false, bool includeProduct = false)
+        {
+            HashSet<int> productIdSet = new();
+            try {
+            //HashSet<int> 
+            productIdSet = _context.Products
+                .Where(product => product.ApiId == apiId)
+                .Select(product => product.ProductId)
+                .ToHashSet();
+            }
+            catch
+            {
+                System.Console.WriteLine("!Error!: Getting Hashset!");
+            }
+
+            IQueryable<Review> result = _context.Reviews.Where(i=>false);
+            try {
+                //IQueryable<Review> 
+                result = _context.Reviews.Where(review => productIdSet.Contains(review.ProductId));
+            }
+            catch
+            {
+                System.Console.WriteLine("!Error!: Getting IQueryable!");
+            }
+
+            if (includeUser)
+                result = result.Include(i => i.User);
+            if (includeProduct)
+                result = result.Include(i => i.Product);
+            return result.ToList();
         }
 
         public List<Review> GetByProductId(int productId, bool includeUser = false, bool includeProduct = false)

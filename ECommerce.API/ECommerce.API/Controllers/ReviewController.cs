@@ -31,11 +31,23 @@ namespace API.Controllers
                 // Check if User model is valid
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
+                
+                int productId;
+                if (reviewRequest.ApiId != null)
+                {
+                    productId = _repo.ApiIdToPrimaryProductId((int)reviewRequest.ApiId);
+                }
+                else if (reviewRequest.ProductId != null)
+                {
+                    productId = _repo.ProductIdToPrimaryProductId((int)reviewRequest.ProductId);
+                }
+                else
+                {
+                    return BadRequest();
+                }
 
                 Review request = _mapper.Map<Review>(reviewRequest);
-                int apiId = reviewRequest.ApiId;
-                request.ProductId = _repo.ApiIdToProductId(apiId);
-
+                request.ProductId = productId;
                 request = _repo.CreateReview(request);
                 return Created($"{request.Id}", _mapper.Map<ReviewDTO>(request));
             }
@@ -66,6 +78,21 @@ namespace API.Controllers
             try
             {
                 List<Review> reviewList = _repo.GetByProductId(productId, includeUser, includeProduct);
+                List<ReviewDTO> dtoList = reviewList.Select(i => _mapper.Map<ReviewDTO>(i)).ToList();
+                return Ok(dtoList);
+            }
+            catch
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("apiId/{apiId}")]
+        public ActionResult<List<ReviewDTO>> GetByApiId(int apiId, bool includeUser = false, bool includeProduct = false)
+        {
+            try
+            {
+                List<Review> reviewList = _repo.GetByApiId(apiId, includeUser, includeProduct);
                 List<ReviewDTO> dtoList = reviewList.Select(i => _mapper.Map<ReviewDTO>(i)).ToList();
                 return Ok(dtoList);
             }
