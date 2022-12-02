@@ -39,6 +39,9 @@ namespace Data
 
             // Save changes made to context to actual DB
             _context.SaveChanges();
+
+
+
             return;
         }
         //create a new wishlist
@@ -137,6 +140,14 @@ namespace Data
                     mWishList.userId = dbWishlist.UserId;
 
                 }
+            }
+            ////assume the user exists, if they don't have wishlist then make them one.
+            else
+            {
+                Models.User tempUser = new Models.User();
+                tempUser.ID = uId;
+                CreateWishList(tempUser);
+                GetWishlist(tempUser.ID);
             }
             //return  a model
             return mWishList;
