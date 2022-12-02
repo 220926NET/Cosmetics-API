@@ -19,95 +19,31 @@ public class ProductRepo : IProductRepo
 
     }
 
-    public List<ProductDetailsDto> GetAllLipsticks()
-    {
-
-
-        var lipstick = _context.Products.Where(product => product.ProductType == "lipstick").ToList();
-
-        List<ProductDetailsDto> lipsticks = GetProductList(lipstick);
-
-        return GetProductList(lipstick);
-    }
-
-    public List<ProductDetailsDto> GetAllBlush()
-    {
-
-
-        var blush = _context.Products.Where(product => product.ProductType == "blush").ToList();
-
-
-
-        return GetProductList(blush);
-    }
-
-    public List<ProductDetailsDto> GetAllEyeShadow()
-    {
-
-
-        var eyeshadow = _context.Products.Where(product => product.ProductType == "eyeshadow").ToList();
-
-        return GetProductList(eyeshadow);
-    }
-
-    public List<ProductDetailsDto> GetAllEyeLiner()
-    {
-
-
-        var eyeliner = _context.Products.Where(product => product.ProductType == "eyeliner").ToList();
-
-
-        return GetProductList(eyeliner);
-    }
-
-
-    public List<ProductDetailsDto> GetAllFoundation()
-    {
-
-        var foundation = _context.Products.Where(product => product.ProductType == "foundation").ToList();
-
-
-        return GetProductList(foundation);
-
-    }
-
-
-
-    public List<ProductDetailsDto> GetProductList(List<Entities.Product> result)
+    public List<ProductDetailsDto> GetProductList(string type)
     {
 
         List<ProductDetailsDto> products = new List<ProductDetailsDto>();
+        int lastProduct = 0;
 
-        foreach (var item in result)
-        {
+        foreach (var item in _context.Products.Where(product => product.ProductType == type).ToList()) {
+            if (lastProduct != item.ApiId) {
+                lastProduct = item.ApiId;
 
-            ProductDetailsDto product = new ProductDetailsDto()
-            {
-                Id = item.ProductId,
-                Name = item.ProductName,
-                Type = item.ProductType,
-                Brand = item.Brand,
-                Inventory = item.Inventory,
-                Price = item.Price,
-                Description = item.Description!,
-                Image = item.Image!,
-                HexValue = item.HexValue!,
-                Discount = DiscountPercent(item.ApiId)
-            };
-
-            // if (products.Count > 0)
-            // {
-
-            //     if (products[products.Count - 1].Name == product.Name)
-            //     {
-            //         products[products.Count - 1].HexValue.Add(item.HexValue);
-            //     }
-            // }
-            // else
-            // {
-            //     products.Add(product);
-            // }
-            products.Add(product);
+                products.Add(new ProductDetailsDto()
+                {
+                    Id = item.ProductId,
+                    ApiId = item.ApiId,
+                    Name = item.ProductName,
+                    Type = item.ProductType,
+                    Brand = item.Brand,
+                    Inventory = item.Inventory,
+                    Price = item.Price,
+                    Description = item.Description!,
+                    Image = item.Image!,
+                    HexValue = item.HexValue!,
+                    Discount = DiscountPercent(item.ApiId)
+                });
+            }
         }
 
         return products;
