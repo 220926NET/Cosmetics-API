@@ -116,7 +116,18 @@ namespace Data
                         foreach(WishlistDetail detail in dbWishlist.WishlistDetails)
                         {
                             
-                            Models.Product mProduct = new Models.Product(detail.Product.ProductId, detail.Product.ProductName, detail.Product.Inventory, detail.Product.Price, detail.Product.Description, detail.Product.Image, detail.Product.ColourName, detail.Product.HexValue);
+                            ProductDetailsDto mProduct = new ProductDetailsDto(){
+                                                Id = detail.Product.ProductId,
+                                                ApiId = detail.Product.ApiId,
+                                                Name = detail.Product.ProductName,
+                                                Type = detail.Product.ProductType,
+                                                Brand = detail.Product.Brand,
+                                                Inventory = detail.Product.Inventory,
+                                                Price = detail.Product.Price,
+                                                Description = detail.Product.Description!,
+                                                Image = detail.Product.Image!,
+                                                HexValue = detail.Product.HexValue!
+                                                };
                             Models.WishlistItem itemToAdd = new Models.WishlistItem(detail.DetailId, detail.Id,detail.ProductId, mProduct);
                             wishlistSet.Add(itemToAdd);
                         }

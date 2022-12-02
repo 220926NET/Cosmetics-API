@@ -6,9 +6,9 @@ namespace Models
         public int Id { get; set; }
         public int ProductId { get; set; }
 
-        public Product Product { get; set; } = null!;
+        public ProductDetailsDto Product { get; set; } = null!;
 
-        public WishlistItem(int dId, int id, int pId, Product p)
+        public WishlistItem(int dId, int id, int pId, ProductDetailsDto p)
         {
             DetailId = dId;
             Id = id;

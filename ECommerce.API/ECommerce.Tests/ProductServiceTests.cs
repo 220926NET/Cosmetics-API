@@ -2,7 +2,7 @@ using Data;
 using Moq;
 using Services;
 using Models;
-
+/*
 namespace ECommerce.Tests;
 public class ProductServiceTests
 {
@@ -27,8 +27,8 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "lipstick",
-      ImageUrl = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      Image = "https://test.com",
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllLipsticks()).Returns(new List<ProductDetailsDto
@@ -65,8 +65,8 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "eyeshadows",
-      ImageUrl = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      Image = "https://test.com",
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllEyeShadow()).Returns(new List<ProductDetailsDto
@@ -96,8 +96,8 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "eyeliner",
-      ImageUrl = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      Image = "https://test.com",
+      HexValue = "#c55555" ,
 
   };
         _productRepoMock.Setup(repo => repo.GetAllEyeLiner()).Returns(new List<ProductDetailsDto
@@ -127,8 +127,8 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "foundation",
-      ImageUrl = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      Image = "https://test.com",
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllFoundation()).Returns(new List<ProductDetailsDto
@@ -158,8 +158,8 @@ public class ProductServiceTests
       Inventory = 20,
       Price = 8.99m,
       Description = "blush",
-      ImageUrl = "https://test.com",
-      ColorHexValues = new List<string>() { "#c55555" },
+      Image = "https://test.com",
+      HexValue = "#c55555",
 
   };
         _productRepoMock.Setup(repo => repo.GetAllBlush()).Returns(new List<ProductDetailsDto
@@ -173,4 +173,4 @@ public class ProductServiceTests
         }, productService.getAllProducts("blush"));
 
     }
-}
+}*/

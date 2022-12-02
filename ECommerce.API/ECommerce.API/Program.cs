@@ -24,7 +24,6 @@ builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options
 builder.Services.AddScoped<IRepository, SQLRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
-builder.Services.AddScoped<IProductService, ProductService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
