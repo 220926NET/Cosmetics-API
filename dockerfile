@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 
 WORKDIR /source
 
-COPY . .
+COPY ./ECommerce.API .
 
 RUN dotnet restore "./ECommerce.API.sln"
 
@@ -16,8 +16,5 @@ FROM  mcr.microsoft.com/dotnet/sdk:6.0-focal
 WORKDIR /app
 
 COPY --from=build /app ./
-
-
-
+    
 ENTRYPOINT ["dotnet", "ECommerce.API.dll"]
-
