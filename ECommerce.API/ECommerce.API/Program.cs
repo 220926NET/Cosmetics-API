@@ -1,24 +1,38 @@
 using Data;
 using Microsoft.EntityFrameworkCore;
-using Services; 
+using Services;
 //using Microsoft.AspNetCore.DataProtection.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddCors(options =>
+if (builder.Environment.IsDevelopment())
 {
-    options.AddDefaultPolicy(
-        policy =>
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(
+            policy =>
+            {
+                policy.WithOrigins("http://localhost:4200")
+                       .AllowAnyMethod()
+                       .AllowAnyHeader()
+                       .AllowCredentials();
+            });
+    });
+}
+else
+{
+    builder.Services.AddCors(options =>
         {
-            policy.WithOrigins("http://localhost:4200")
-                   .AllowAnyMethod()
-                   .AllowAnyHeader()
-                   .AllowCredentials();
+            options.AddDefaultPolicy(
+                policy =>
+                {
+                    policy.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
         });
-});
-
+}
 
 builder.Services.AddDbContext<Data.Entities.CosmeticsContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CosmeticsDB")));
 builder.Services.AddScoped<IRepository, SQLRepository>();
@@ -30,7 +44,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddControllers()
     // Prevents "A possible object cycle was detected" error
-    .AddJsonOptions(i => 
+    .AddJsonOptions(i =>
         i.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
     );
 
@@ -41,7 +55,7 @@ builder.Services.AddEndpointsApiExplorer();
 // Prevents "Failed to generate schema" error
 builder.Services.AddSwaggerGen(options =>
  {
-       options.CustomSchemaIds(type => type.FullName);
+     options.CustomSchemaIds(type => type.FullName);
  });
 
 var app = builder.Build();
