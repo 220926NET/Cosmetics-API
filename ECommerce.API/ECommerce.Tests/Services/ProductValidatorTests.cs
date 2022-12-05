@@ -1,7 +1,7 @@
 using Xunit;
 using Services;
 
-namespace ECommerce.Tests;
+namespace ECommerce.Tests.Services;
 
 public class ProductsValidatorTests
 {
