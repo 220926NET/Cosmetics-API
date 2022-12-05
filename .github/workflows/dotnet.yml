@@ -64,7 +64,7 @@ jobs:
           context: .
           push: true
           tags: ecommerceapirev3.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_93db6ae496404d499a6dc8a936e1ecbc }}/envset:${{ github.sha }}
-          file: ./ECommerce.API/dockerfile
+          file: ./dockerfile
 
   deploy:
       runs-on: ubuntu-latest
