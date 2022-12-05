@@ -23,7 +23,7 @@ namespace API.Controllers
         }
 
         [HttpPut("Purchase")]
-        public  ActionResult<OrderDTO[]> Purchase(OrderDTO[] purchaseProducts)
+        public  ActionResult<OrderDTO[]> Purchase(OrderDTO[] purchaseProducts,int userId)
         {   
             // product list if purchase success
             List<OrderDTO> updatedProductList = new List<OrderDTO>();
@@ -49,7 +49,7 @@ namespace API.Controllers
             // do trasaction
             foreach(OrderDTO item in purchaseProducts)
             {
-                _repo.ReduceInventoryById(item.Id, item.Quantity);
+                _repo.ReduceInventoryById(item.Id, item.Quantity, userId);
                 updatedProductList.Add(item);
             }
 
