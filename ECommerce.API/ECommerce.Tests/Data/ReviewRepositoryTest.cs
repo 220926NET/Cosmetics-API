@@ -3,6 +3,7 @@ using Moq;
 using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
+namespace ECommerce.Tests.Data;
 
 public class ReviewRepositoryTest
 {

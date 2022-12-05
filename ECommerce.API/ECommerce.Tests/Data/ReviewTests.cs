@@ -1,10 +1,11 @@
 using Xunit;
 using Data.Entities;
 
-public class ReviewEntitiesTest
+namespace ECommerce.Tests.Data;
+public class ReviewTests
 {
     [Fact]
-    public void Review_Create()
+    public void Create()
     {
         Review review = new Review {
             Id = 11,
