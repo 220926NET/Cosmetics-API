@@ -12,20 +12,25 @@ namespace API.Controllers
         private readonly IProductRepo _productRepo;
         private readonly ILogger<ProductController> _logger;
 
-        public ProductController(ILogger<ProductController> logger, IProductRepo productRepo) {
+        private readonly IConfiguration _config;
+
+        public ProductController(ILogger<ProductController> logger, IProductRepo productRepo)
+        {
             this._logger = logger;
             this._productRepo = productRepo;
         }
 
-        /// <c> GetAllProductsByType </c>
-        /// <returns> a list of ProductDtos
         [HttpGet("{productType}")]
-        public ActionResult<ProductDetailsDto> GetAllProductsByType(string productType) {
-            if (ProductsValidator.IsValidProductType(productType)) {
+        public ActionResult<ProductDetailsDto> GetAllProductsByType(string productType)
+        {
+
+            if (ProductsValidator.IsValidProductType(productType))
+            {
                 //_logger.LogInformation("api/product/{id} completed successfully");
                 return Ok(_productRepo.GetProductList(productType));
             }
-            else {
+            else
+            {
                 _logger.LogWarning("User queried product type of  " + productType);
                 return NotFound("Products types available are : foundation, blush, lipstick, eyeliner, eyeshadow");
             }
@@ -34,11 +39,13 @@ namespace API.Controllers
         [HttpGet("id/{productId}")]
         public ActionResult GetProductById(int productId)
         {
-            try {
+            try
+            {
                 ProductDetailsDto product = _productRepo.GetById(productId);
                 return Ok(product);
             }
-            catch {
+            catch
+            {
                 return NotFound();
             }
         }
