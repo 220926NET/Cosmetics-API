@@ -71,7 +71,7 @@ namespace Data.Entities
 
             modelBuilder.Entity<OrderDetail>(entity =>
             {
-                entity.HasNoKey();
+                //entity.HasNoKey();
 
                 entity.Property(e => e.OrderId).HasColumnName("OrderID");
 
@@ -79,16 +79,18 @@ namespace Data.Entities
 
                 entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
 
-                entity.HasOne(d => d.Order)
-                    .WithMany()
-                    .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__OrderDeta__Order__498EEC8D");
+                entity.Property(e => e.OrderDetailID).HasColumnName("OrderDetailID");
 
-                entity.HasOne(d => d.Product)
-                    .WithMany()
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__OrderDeta__Produ__4A8310C6");
+                // entity.HasOne(d => d.Order)
+                //     .WithMany()
+                //     .HasForeignKey(d => d.OrderId)
+                //     .HasConstraintName("[FK__OrderDeta__Order__29E1370A");
+
+                // entity.HasOne(d => d.Product)
+                //     .WithMany()
+                //     .HasForeignKey(d => d.ProductId)
+                //     .OnDelete(DeleteBehavior.ClientSetNull)
+                //     .HasConstraintName("FK__OrderDeta__Produ__4A8310C6");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -181,6 +183,11 @@ namespace Data.Entities
             });
 
             OnModelCreatingPartial(modelBuilder);
+        }
+
+        internal void Add(object var, object value)
+        {
+            throw new NotImplementedException();
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
