@@ -47,28 +47,13 @@ namespace Data
 
         public List<Review> GetByApiId(int apiId, bool includeUser = false, bool includeProduct = false)
         {
-            HashSet<int> productIdSet = new();
-            try {
-            //HashSet<int> 
-            productIdSet = _context.Products
+            HashSet<int> productIdSet = _context.Products
                 .Where(product => product.ApiId == apiId)
                 .Select(product => product.ProductId)
                 .ToHashSet();
-            }
-            catch
-            {
-                System.Console.WriteLine("!Error!: Getting Hashset!");
-            }
 
-            IQueryable<Review> result = _context.Reviews.Where(i=>false);
-            try {
-                //IQueryable<Review> 
-                result = _context.Reviews.Where(review => productIdSet.Contains(review.ProductId));
-            }
-            catch
-            {
-                System.Console.WriteLine("!Error!: Getting IQueryable!");
-            }
+            IQueryable<Review> result = _context.Reviews
+                .Where(review => productIdSet.Contains(review.ProductId));
 
             if (includeUser)
                 result = result.Include(i => i.User);
@@ -99,9 +84,10 @@ namespace Data
 
         public bool Delete(int reviewId)
         {
-            var entity = _context.Reviews.First(i => i.Id == reviewId);
-            if (entity is null)
+            var entityQuery = _context.Reviews.Where(i => i.Id == reviewId);
+            if (entityQuery.Count() == 0)
                 return false;
+            var entity = entityQuery.First();
             _context.Reviews.Remove(entity);
             _context.SaveChanges();
             return true;

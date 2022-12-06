@@ -15,7 +15,7 @@ namespace Data
         Models.Wishlist GetWishlist(int userId);
 
         /* Update */
-        void ReduceInventoryById(int productId, int purchaseQuantity);
+        void ReduceInventoryById(int productId, int purchaseQuantity, int userId);
 
         /* Destroy */
         void DeleteWishListItem(int detailId);

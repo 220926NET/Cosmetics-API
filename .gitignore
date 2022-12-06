@@ -9,7 +9,7 @@
 
 #Connection Strings
 appsettings.Development.json
-
+appsettings.Production.json
 
 
 
@@ -360,3 +360,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# ignore Test coverage report
+**/ECommerce.Tests/coveragereport/

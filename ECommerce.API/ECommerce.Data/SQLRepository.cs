@@ -153,7 +153,6 @@ namespace Data
             return mWishList;
         }
 
-
         //Destroy Stuff
         public void DeleteWishListItem(int detailId)
         {
@@ -168,12 +167,37 @@ namespace Data
 
 
         //Updated quantity for purchase
-        public void ReduceInventoryById(int productId, int purchaseQuantity)
+        // create records on Orders table
+        public void ReduceInventoryById(int productId, int purchaseQuantity, int userId)
         {
             var product = _context.Products.FirstOrDefault(item => item.ProductId == productId);
             if(product != null){
                 product.Inventory = product.Inventory - purchaseQuantity;
+
+                var newOrder = new Entities.Order{
+                    Purchaser = userId,
+                    TimeStamp = DateTime.Now,
+                    Amount = product.Price*purchaseQuantity
+                };
+
+                // Save changes made to context to actual DB
+                _context.Add(newOrder);
                 _context.SaveChanges();
+
+                // Create Order table
+                Console.WriteLine(newOrder.OrderId);
+
+                // _context.Add(new Entities.OrderDetail{});
+                var newOrderDetail = new Entities.OrderDetail{
+                    OrderId = newOrder.OrderId,
+                    ProductId = productId,
+                    Quantity = purchaseQuantity
+                };
+                
+                _context.Add(newOrderDetail);
+                // Save changes made to context to actual DB
+                _context.SaveChanges();
+
             }
             
         }

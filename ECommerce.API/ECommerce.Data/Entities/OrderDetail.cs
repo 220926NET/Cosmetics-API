@@ -1,7 +1,11 @@
-﻿namespace Data.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Data.Entities
 {
     public partial class OrderDetail
     {
+        
+        public int OrderDetailID {get; set;}
         public int? OrderId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
