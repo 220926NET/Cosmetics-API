@@ -1,4 +1,5 @@
 using Data;
+using Models;
 using API.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

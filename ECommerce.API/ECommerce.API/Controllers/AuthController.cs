@@ -23,8 +23,8 @@ namespace API.Controllers
         [HttpPost("Register")]
         public ActionResult<string> Register([FromBody] User newUser) {
             // Check if User model is valid
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            // if (!ModelState.IsValid)
+            //     return BadRequest(ModelState);
             // Ensure that all necessary variables have values, if not return error
             if (String.IsNullOrWhiteSpace(newUser.FirstName) || String.IsNullOrWhiteSpace(newUser.LastName) || String.IsNullOrWhiteSpace(newUser.Email) || String.IsNullOrWhiteSpace(newUser.Password))
                 return BadRequest(400);
