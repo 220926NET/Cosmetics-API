@@ -5,7 +5,7 @@ using Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace ECommerce.Tests.Repositories;
+namespace ECommerce.Tests;
 
 public class CosmeticsContextTests
 {

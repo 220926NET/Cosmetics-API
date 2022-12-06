@@ -1,7 +1,7 @@
 using Xunit;
 using Models;
 
-namespace ECommerce.Tests.Models;
+namespace ECommerce.Tests;
 
 public class WishlistItemTests
 {

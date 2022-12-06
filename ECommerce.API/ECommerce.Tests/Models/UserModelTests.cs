@@ -1,9 +1,9 @@
 using Xunit;
 using Models;
 
-namespace ECommerce.Tests.Models;
+namespace ECommerce.Tests;
 
-public class UserTests
+public class UserModelTests
 {
     [Fact]
     public void User_Create()

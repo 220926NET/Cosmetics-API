@@ -1,8 +1,8 @@
 using Xunit;
 using Data.Entities;
 
-namespace ECommerce.Tests.Data;
-public class UserTests
+namespace ECommerce.Tests;
+public class UserEntityTests
 {
     [Fact]
     public void Create()

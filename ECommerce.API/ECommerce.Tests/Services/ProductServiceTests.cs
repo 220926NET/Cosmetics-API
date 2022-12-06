@@ -3,7 +3,7 @@ using Moq;
 using Services;
 using Models;
 
-namespace ECommerce.Tests.Services;
+namespace ECommerce.Tests;
 /*
 namespace ECommerce.Tests;
 public class ProductServiceTests

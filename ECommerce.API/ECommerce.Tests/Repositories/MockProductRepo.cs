@@ -5,18 +5,18 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Tests;
 
-internal class MockReviewRepo:IDisposable
+internal class MockProductRepo:IDisposable
 {
     private DbContextOptions<CosmeticsContext> options;
     public CosmeticsContext context;
     private ILoggerFactory loggerFactory;
-    private ILogger<ReviewRepository> logger;
-    public ReviewRepository reviewRepository;
-    public MockReviewRepo()
+    private ILogger<ProductRepo> logger;
+    public ProductRepo repo;
+    public MockProductRepo()
     {
         // Create in memory database
         options = new DbContextOptionsBuilder<CosmeticsContext>()
-            .UseInMemoryDatabase(databaseName: "MockReviewDatabase")
+            .UseInMemoryDatabase(databaseName: "MockProductDatabase")
             .Options;
         
         // Create mocked context
@@ -24,36 +24,16 @@ internal class MockReviewRepo:IDisposable
 
         // Create logger
         loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.SetMinimumLevel(LogLevel.Trace));
-        logger = loggerFactory.CreateLogger<ReviewRepository>();
+        logger = loggerFactory.CreateLogger<ProductRepo>();
 
         // Create review repository
-        reviewRepository = new ReviewRepository(logger, context);
+        repo = new ProductRepo(logger, context);
 
         SeedData();
     }
 
     private void SeedData()
     {
-        context.Users.Add(
-            new User {
-                Id = 1,
-                FirstName = "John",
-                LastName = "Smith",
-                Email = "johnsmith@mail.com",
-                Password = "password"
-            }
-        );
-
-        context.Users.Add(
-            new User {
-                Id = 2,
-                FirstName = "Jane",
-                LastName = "Doe",
-                Email = "janedoe@mail.com",
-                Password = "password"
-            }
-        );
-
         context.Products.Add(
             new Product {
                 ProductId = 11,
@@ -102,29 +82,15 @@ internal class MockReviewRepo:IDisposable
             }
         );
 
-        context.Reviews.Add(new Review {
-            Id = 21,
-            UserId = 1,
-            ProductId = 11,
-            Text = "Great product! My wife loves it!",
-            Rating = 5
-        });
-
-        context.Reviews.Add(new Review {
-            Id = 22,
-            UserId = 2,
-            ProductId = 11,
-            Text = "Terrible",
-            Rating = 1
-        });
-
-        context.Reviews.Add(new Review {
-            Id = 23,
-            UserId = 2,
-            ProductId = 17,
-            Text = "Simply the best!",
-            Rating = 5
-        });
+        context.Deals.Add(
+            new Deal {
+                Id=1,
+                Discount=0.1m,
+                StartTime=DateTime.Now,
+                EndTime=DateTime.MaxValue,
+                Product=11
+            }
+        );
 
         context.SaveChanges();
     }

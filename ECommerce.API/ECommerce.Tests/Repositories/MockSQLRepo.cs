@@ -5,18 +5,19 @@ using Microsoft.Extensions.Logging;
 
 namespace ECommerce.Tests;
 
-internal class MockReviewRepo:IDisposable
+internal class MockSQLRepo:IDisposable
 {
     private DbContextOptions<CosmeticsContext> options;
     public CosmeticsContext context;
     private ILoggerFactory loggerFactory;
-    private ILogger<ReviewRepository> logger;
-    public ReviewRepository reviewRepository;
-    public MockReviewRepo()
+    private ILogger<SQLRepository> logger;
+    public SQLRepository sqlRepo;
+    public MockSQLRepo(bool seedUsers = false, bool seedProducts = false)
     {
         // Create in memory database
         options = new DbContextOptionsBuilder<CosmeticsContext>()
-            .UseInMemoryDatabase(databaseName: "MockReviewDatabase")
+            .UseInMemoryDatabase(databaseName: "MockSQLDatabase")
+            .EnableSensitiveDataLogging()
             .Options;
         
         // Create mocked context
@@ -24,15 +25,19 @@ internal class MockReviewRepo:IDisposable
 
         // Create logger
         loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder.SetMinimumLevel(LogLevel.Trace));
-        logger = loggerFactory.CreateLogger<ReviewRepository>();
+        logger = loggerFactory.CreateLogger<SQLRepository>();
 
-        // Create review repository
-        reviewRepository = new ReviewRepository(logger, context);
+        // Create repository
+        sqlRepo = new SQLRepository(logger, context);
 
-        SeedData();
+        //SeedData();
+        //if (seedUsers)
+            SeedUsers();
+        //if (seedProducts)
+            SeedProducts();
     }
 
-    private void SeedData()
+    public void SeedUsers()
     {
         context.Users.Add(
             new User {
@@ -54,6 +59,11 @@ internal class MockReviewRepo:IDisposable
             }
         );
 
+        context.SaveChanges();
+    }
+
+    public void SeedProducts()
+    {
         context.Products.Add(
             new Product {
                 ProductId = 11,
@@ -67,22 +77,6 @@ internal class MockReviewRepo:IDisposable
                 ColourName = "Tomato red",
                 HexValue = "#ff0000",
                 Inventory = 17
-            }
-        );
-
-        context.Products.Add(
-            new Product {
-                ProductId = 12,
-                ApiId = 91,
-                ProductName = "Acme Lipstick 1338",
-                ProductType = "lipstick",
-                Brand = "Acme",
-                Price = 9.99m,
-                Description = "The latest style of lipstick from Acme.",
-                Image = "www.image.com/image",
-                ColourName = "Apple red",
-                HexValue = "#ee0000",
-                Inventory = 8
             }
         );
 
@@ -102,31 +96,51 @@ internal class MockReviewRepo:IDisposable
             }
         );
 
-        context.Reviews.Add(new Review {
-            Id = 21,
-            UserId = 1,
-            ProductId = 11,
-            Text = "Great product! My wife loves it!",
-            Rating = 5
-        });
-
-        context.Reviews.Add(new Review {
-            Id = 22,
-            UserId = 2,
-            ProductId = 11,
-            Text = "Terrible",
-            Rating = 1
-        });
-
-        context.Reviews.Add(new Review {
-            Id = 23,
-            UserId = 2,
-            ProductId = 17,
-            Text = "Simply the best!",
-            Rating = 5
-        });
+        context.Products.Add(
+            new Product {
+                ProductId = 21,
+                ApiId = 102,
+                ProductName = "Jessi's Blush",
+                ProductType = "blush",
+                Brand = "Jessi's",
+                Price = 13.99m,
+                Description = "The latest style of blush from Jessi's.",
+                Image = "www.image.com/image",
+                ColourName = "Aquamarine",
+                HexValue = "#0000bb",
+                Inventory = 8
+            }
+        );
 
         context.SaveChanges();
+    }
+
+    public void SeedWishlist()
+    {
+        /*
+        context.Wishlists.Add(
+            new Wishlist {
+                Id = 1,
+                UserId = 2
+            }
+        );
+
+        context.WishlistDetails.Add(
+            new WishlistDetail {
+                DetailId = 1,
+                Id = 1,
+                ProductId = 17
+            }
+        );
+
+        context.WishlistDetails.Add(
+            new WishlistDetail {
+                DetailId = 2,
+                Id = 1,
+                ProductId = 17
+            }
+        );
+        */
     }
 
     public void Dispose()

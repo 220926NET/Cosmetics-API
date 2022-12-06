@@ -1,7 +1,7 @@
 using Xunit;
 using Data.Entities;
 
-namespace ECommerce.Tests.Data;
+namespace ECommerce.Tests;
 public class LogTest
 {
     [Fact]
