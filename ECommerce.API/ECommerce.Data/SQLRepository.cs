@@ -153,7 +153,6 @@ namespace Data
             return mWishList;
         }
 
-
         //Destroy Stuff
         public void DeleteWishListItem(int detailId)
         {
