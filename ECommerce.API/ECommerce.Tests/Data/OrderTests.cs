@@ -7,7 +7,7 @@ public class OrderTest
     [Fact]
     public void Create()
     {
-        User user = new User {
+        Data.Entities.User user = new Data.Entities.User {
             Id = 11, 
             FirstName = "John",
             LastName = "Smith",
